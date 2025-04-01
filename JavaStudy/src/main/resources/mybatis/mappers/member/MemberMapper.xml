@@ -2,11 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.javastudy.member.service.MemberMapper">
 
+    <sql id="selectMemberListWhereClause">
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(groupSeq)">
+            AND NOT EXISTS(SELECT TGM.MEMBER_SEQ
+                           FROM TB_GROUP_MEMBER TGM
+                           WHERE TGM.DEL_YN = 'N'
+                           AND TM.SEQ = TGM.MEMBER_SEQ
+                           AND TGM.GROUP_SEQ = #{groupSeq})
+        </if>
+    </sql>
+
     <select id="selectMemberList" resultType="com.example.javastudy.member.model.MemberDto">
         /* MemberMapper.selectMemberList */
         SELECT TM.*
         FROM TB_MEMBER TM
         WHERE TM.DEL_YN = 'N'
+        <include refid="selectMemberListWhereClause" />
         ORDER BY TM.SEQ ASC
     </select>
 

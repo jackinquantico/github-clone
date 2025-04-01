@@ -1,5 +1,6 @@
 package com.example.core.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -26,5 +27,18 @@ public class CommonUtils {
 
     public static HttpSession getSession() {
         return getRequest().getSession();
+    }
+
+
+    public static String selected(String val1, String val2) {
+        return (StringUtils.isNoneBlank(val1, val2) && val1.equals(val2)) ? "selected" : "";
+    }
+
+    public static String checked(String val1, String val2) {
+        return (StringUtils.isNoneBlank(val1, val2) && val1.equals(val2)) ? "checked" : "";
+    }
+
+    public static String defaultString(String value) {
+        return StringUtils.defaultString(value);
     }
 }

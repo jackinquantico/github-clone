@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.javastudy.project.service.ProjectMapper">
+
+    <sql id="selectProjectListWhereClause">
+        <choose>
+            <when test="@org.apache.commons.lang3.StringUtils@isNotBlank(groupSeq)">
+                AND TP.GROUP_SEQ = #{groupSeq}
+            </when>
+            <otherwise>
+                <choose>
+                    <when test="@org.apache.commons.lang3.StringUtils@isNotBlank(projectOwner)">
+                        AND (TP.VISIBILITY IN ('Public', 'Internal')
+                            OR TP.PROJECT_OWNER = #{projectOwner})
+                    </when>
+                    <otherwise>
+                        AND TP.VISIBILITY IN ('Public', 'Internal')
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+    </sql>
+
+    <select id="selectProjectList" resultType="com.example.javastudy.project.model.ProjectDto">
+        /* ProjectMapper.selectProjectList */
+        SELECT TP.*
+        FROM TB_PROJECT TP
+        JOIN TB_GROUP TG ON TG.DEL_YN = 'N' AND TP.GROUP_SEQ = TG.SEQ
+        WHERE TP.DEL_YN = 'N'
+        <include refid="selectProjectListWhereClause" />
+        ORDER BY TP.UPDATE_DATE DESC
+    </select>
+
+    <select id="selectProject" resultType="com.example.javastudy.project.model.ProjectDto">
+        /* ProjectMapper.selectProject */
+        SELECT TP.*
+             , TG.GROUP_NAME
+        FROM TB_PROJECT TP
+        JOIN TB_GROUP TG ON TP.GROUP_SEQ = TG.SEQ
+        WHERE TP.DEL_YN = 'N'
+        AND TP.PROJECT_NAME = #{projectName}
+    </select>
+
+    <insert id="insertProject">
+        /* ProjectMapper.insertProject */
+        INSERT INTO TB_PROJECT ( SEQ
+                               , GROUP_SEQ
+                               , GROUP_NAME
+                               , PROJECT_NAME
+                               , PROJECT_OWNER
+                               , DESCRIPTION
+                               , VISIBILITY
+                               , CREATE_ID
+                               , CREATE_NAME)
+        VALUES ( #{seq}
+               , #{groupSeq}
+               , #{groupName}
+               , #{projectName}
+               , #{projectOwner}
+               , #{description}
+               , #{visibility}
+               , #{createId}
+               , #{createName} )
+    </insert>
+
+    <update id="updateProject">
+        /* ProjectMapper.updateProject */
+        UPDATE TB_PROJECT
+        SET UPDATE_ID = #{updateId}
+        , UPDATE_NAME = #{updateName}
+        , UPDATE_DATE = NOW()
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(description)">
+            , DESCRIPTION = #{description}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(visibility)">
+            , VISIBILITY = #{visibility}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(defaultBranch)">
+            , DEFAULT_BRANCH = #{defaultBranch}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(lastCommitMessage)">
+            , LAST_COMMIT_MESSAGE = #{lastCommitMessage}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(lastCommitYmd)">
+            , LAST_COMMIT_YMD = #{lastCommitYmd}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(lastCommitHm)">
+            , LAST_COMMIT_HM = #{lastCommitHm}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(commitCount)">
+            , COMMIT_COUNT = #{commitCount}
+        </if>
+        WHERE SEQ = #{seq}
+    </update>
+
+
+    <update id="deleteProject">
+        /* ProjectMapper.deleteProject */
+        UPDATE TB_PROJECT
+        SET DEL_YN      = 'Y'
+          , DELETE_ID   = #{deleteId}
+          , DELETE_NAME = #{deleteName}
+          , DELETE_DATE = NOW()
+        WHERE SEQ = #{seq}
+    </update>
+
+</mapper>

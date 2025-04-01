@@ -2,6 +2,8 @@ package com.example.javastudy;
 
 import com.example.javastudy.member.model.MemberDto;
 import com.example.javastudy.member.service.MemberService;
+import com.example.javastudy.project.model.ProjectDto;
+import com.example.javastudy.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,11 +26,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class IndexController {
 
-    private final MemberService memberService;
+    private final ProjectService projectService;
 
     @GetMapping({ "", "/" })
-    public String index(@ModelAttribute MemberDto memberDto, Model model) {
-        model.addAttribute("list", memberService.selectMemberList(memberDto));
+    public String index(@ModelAttribute ProjectDto projectDto, Model model) {
+        model.addAttribute("list", projectService.selectProjectList(projectDto));
         return "home/index";
     }
 }

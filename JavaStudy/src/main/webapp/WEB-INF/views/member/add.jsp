@@ -50,9 +50,6 @@
     function fnSave() {
         const url = fnGetFormData('addForm').getUrl();
         const data = fnGetFormData('addForm').getData();
-
-        console.log(data)
-
         fnPost(url, JSON.stringify(data));
     }
 </script>

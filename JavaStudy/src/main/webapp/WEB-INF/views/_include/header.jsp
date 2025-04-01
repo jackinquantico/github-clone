@@ -9,11 +9,13 @@
     </div>
     <div>
         <c:if test="${ !isAuthenticated }">
-            <a href="/auth/login">로그인</a>
-            <a href="/auth/join">회원가입</a>
+            <a href="/auth/login">Login</a>
+            <a href="/auth/join">Join</a>
         </c:if>
         <c:if test="${ isAuthenticated }">
-            <a href="/auth/logout">로그아웃</a>
+            <a href="/member/list">Member</a>
+            <a href="/group/list">Group</a>
+            <a href="/auth/logout">Logout</a>
         </c:if>
     </div>
 </div>

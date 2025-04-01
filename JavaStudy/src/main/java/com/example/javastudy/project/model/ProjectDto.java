@@ -1,13 +1,12 @@
-package com.example.javastudy.member.model;
+package com.example.javastudy.project.model;
 
 import com.example.core.utils.Ulid;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 
-
 /**
- * packageName    : com.example.javastudy.member.model
- * fileName       : MemberDto
+ * packageName    : com.example.javastudy.project.model
+ * fileName       : ProjectDto
  * author         : 서채영
  * date           : 2025-03-25
  * description    :
@@ -22,18 +21,32 @@ import org.apache.commons.lang3.StringUtils;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberDto {
-    /** SEQ */
+public class ProjectDto {
+    /** 프로젝트_SEQ */
     private String seq;
-    /** 회원 아이디 */
-    private String memberId;
-    /** 회원 이름 */
-    private String memberName;
-    /** 회원 비밀번호 */
-    private String memberPassword;
-    /** 회원 이메일 */
-    private String memberEmail;
-    /** 삭제 여부 */
+    /** 그룹_SEQ */
+    private String groupSeq;
+    /** 그룹_이름 */
+    private String groupName;
+    /** 프로젝트_이름 */
+    private String projectName;
+    /** 프로젝트_소유자 */
+    private String projectOwner;
+    /** 프로젝트_설명 */
+    private String description;
+    /** 공개_여부 */
+    private String visibility;
+    /** 기본_브랜치 */
+    private String defaultBranch;
+    /** 최근_커밋_메시지 */
+    private String lastCommitMessage;
+    /** 최근_커밋_일자 */
+    private String lastCommitYmd;
+    /** 최근_커밋_시간 */
+    private String lastCommitHm;
+    /** 전체_커밋_수 */
+    private String commitCount;
+    /** 삭제여부 */
     private String delYn;
     /** 등록ID */
     private String createId;
@@ -54,21 +67,26 @@ public class MemberDto {
     /** 삭제일시 */
     private String deleteDate;
 
-    private String groupSeq;
-
     public void generateSeq() {
         if (StringUtils.isBlank(seq)) {
             this.seq = Ulid.createUlid();
         }
     }
 
-    public MemberVo toEntity() {
-        MemberVo memberVo = MemberVo.builder()
+    public ProjectVo toEntity() {
+        ProjectVo projectVo = ProjectVo.builder()
                 .seq(seq)
-                .memberId(memberId)
-                .memberName(memberName)
-                .memberPassword(memberPassword)
-                .memberEmail(memberEmail)
+                .groupSeq(groupSeq)
+                .groupName(groupName)
+                .projectName(projectName)
+                .projectOwner(projectOwner)
+                .description(description)
+                .visibility(visibility)
+                .defaultBranch(defaultBranch)
+                .lastCommitMessage(lastCommitMessage)
+                .lastCommitYmd(lastCommitYmd)
+                .lastCommitHm(lastCommitHm)
+                .commitCount(commitCount)
                 .delYn(delYn)
                 .createId(createId)
                 .createName(createName)
@@ -80,6 +98,6 @@ public class MemberDto {
                 .deleteName(deleteName)
                 .deleteDate(deleteDate)
                 .build();
-        return memberVo;
+        return projectVo;
     }
 }
