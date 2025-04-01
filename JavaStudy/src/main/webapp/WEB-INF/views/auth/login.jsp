@@ -39,8 +39,8 @@
 
 <script>
     function fnLogin() {
-        const url = fnGetFormData('loginForm').getUrl();
-        const data = fnGetFormData('loginForm').getData();
-        fnPost(url, JSON.stringify(data));
+        const url = CommonUtils.fnGetFormData('loginForm').getUrl();
+        const data = CommonUtils.fnGetFormData('loginForm').getData();
+        CommonUtils.fnPost(url, JSON.stringify(data));
     }
 </script>

@@ -16,7 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/mermaid@11.6.0/dist/mermaid.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@gitgraph/js"></script>
 
-    <script src="/js/utils/CommonUtils.js"></script>
+    <script src="/js/utils/core.js" type="module"></script>
 
     <link href="/css/style.css" rel="stylesheet" type="text/css">
 </head>

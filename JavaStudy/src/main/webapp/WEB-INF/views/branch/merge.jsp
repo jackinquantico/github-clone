@@ -48,14 +48,14 @@
 
 <script>
     function fnMerge() {
-        const url = fnGetFormData('saveForm').getUrl();
-        const data = fnGetFormData('saveForm').getData();
+        const url = CommonUtils.fnGetFormData('saveForm').getUrl();
+        const data = CommonUtils.fnGetFormData('saveForm').getData();
         if (data.fromBranchSeq === data.seq) {
             alert('타겟 브랜치는 현재 브랜치가 될 수 없습니다.');
             return false;
         }
         data.fromBranchLastCommitSeq = $('select[name=seq] option:selected').data('lastCommitSeq');
         data.branchName = $('select[name=seq] option:selected').data('branchName');
-        fnPost(url, JSON.stringify(data));
+        CommonUtils.fnPost(url, JSON.stringify(data));
     }
 </script>

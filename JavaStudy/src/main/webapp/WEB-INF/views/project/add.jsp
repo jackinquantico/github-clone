@@ -53,9 +53,9 @@
 
 <script>
     function fnSave() {
-        const url = fnGetFormData('saveForm').getUrl();
-        const data = fnGetFormData('saveForm').getData();
+        const url = CommonUtils.fnGetFormData('saveForm').getUrl();
+        const data = CommonUtils.fnGetFormData('saveForm').getData();
         data.groupName = $('select[name=groupSeq] option:selected').data('groupName');
-        fnPost(url, JSON.stringify(data));
+        CommonUtils.fnPost(url, JSON.stringify(data));
     }
 </script>
