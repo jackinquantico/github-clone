@@ -116,4 +116,29 @@ public class BranchController {
 
         return AjaxResBody.toResponse(result, message, callback);
     }
+
+    @GetMapping("/merge")
+    public String merge(@ModelAttribute BranchDto branchDto, Model model) {
+        model.addAttribute("info", branchService.selectBranch(branchDto));
+        model.addAttribute("list", branchService.selectBranchList(branchDto));
+        return "branch/merge";
+    }
+
+    @PostMapping("/merge")
+    public @ResponseBody AjaxResBody merge(@RequestBody BranchDto branchDto, @ModelAttribute BranchDto urlInfo) {
+        boolean result = false;
+        String message = "브랜치 병합에 실패했습니다.";
+        String callback = "";
+
+        try {
+            result = commitService.insertMergeCommit(branchDto);
+            message = "브랜치를 병합했습니다.";
+
+            callback = "fnRedirectUrl('/group/" + urlInfo.getGroupName() + "/project/" + urlInfo.getProjectName() + "/branch/list')";
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+
+        return AjaxResBody.toResponse(result, message, callback);
+    }
 }

@@ -68,7 +68,8 @@ public class BranchDto {
     private String deleteDate;
 
     // 검색용
-    private String fromBranchSeq; // new Branch from 시 사용
+    private String fromBranchSeq; // new Branch from, merge 시 사용
+    private String fromBranchName;
 
     public void generateSeq() {
         if (StringUtils.isBlank(seq)) {

@@ -37,6 +37,7 @@
         <button type="button" onclick="location.href='/group/${ info.groupName }/project/${ info.projectName }/branch/${ info.branchName }/update';">Update</button>
         <button type="button" onclick="fnDelete()">Delete</button>
         <button type="button" onclick="fnAddBranch('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">New Branch From</button>
+        <button type="button" onclick="fnMerge('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">Merge</button>
     </form>
     <table>
         <thead>
@@ -144,5 +145,10 @@
     /** 브랜치 생성 */
     function fnAddBranch(groupName, projectName, branchSeq) {
         location.href = `/group/\${groupName}/project/\${projectName}/branch/add?branchSeq=\${branchSeq}`;
+    }
+
+    /** 브랜치 merge */
+    function fnMerge(groupName, projectName, branchSeq) {
+        location.href = `/group/\${groupName}/project/\${projectName}/branch/merge?seq=\${branchSeq}`;
     }
 </script>

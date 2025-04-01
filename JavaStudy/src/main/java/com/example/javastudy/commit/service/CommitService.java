@@ -8,10 +8,8 @@ import com.example.javastudy.commit.model.CommitDto;
 import com.example.javastudy.project.model.ProjectDto;
 import com.example.javastudy.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.List;
 
 /**
@@ -39,14 +37,15 @@ public class CommitService {
 
     public boolean insertCommit(CommitDto dto) {
         dto.generateSeq();
-        setCommitDate(dto);
+        setCommitInfo(dto);
         commitMapper.insertCommit(dto.toEntity());
 
         updateLastCommitInfo(dto);
         return true;
     }
 
-    private void setCommitDate(CommitDto dto) {
+    private void setCommitInfo(CommitDto dto) {
+        dto.setCommitterId(SecurityUtils.Impl.getMemberIdInPrinciple());
         dto.setCommitYmd(DateUtils.getDate(2));
         dto.setCommitHm(DateUtils.getDate(11));
     }
@@ -75,5 +74,17 @@ public class CommitService {
             projectDto.setCommitCount(info.getCommitCount());
         }
         projectService.updateProject(projectDto);
+    }
+
+    public boolean insertMergeCommit(BranchDto branchDto) {
+        CommitDto commitDto = CommitDto.builder()
+                .branchSeq(branchDto.getSeq())
+                .parentCommitSeq(branchDto.getLastCommitSeq())
+                .commitMessage("Merge branch '" + branchDto.getFromBranchName() + "' into " + branchDto.getBranchName())
+                .mergeFromCommitSeq(branchDto.getFromBranchSeq())
+                .build();
+        insertCommit(commitDto);
+
+        return true;
     }
 }
