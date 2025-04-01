@@ -35,7 +35,9 @@ Implements key version control concepts like repositories, branches, commits, an
 
 ---
 
-## 📁 Project Structuresrc
+## 📁 Project Structure
+```
+src
 └── main
     ├── java
     │   └── com.example
@@ -49,7 +51,7 @@ Implements key version control concepts like repositories, branches, commits, an
         └── WEB-INF
             ├── tiles
             └── views
-
+```
 ---
 
 ## 📌 Note
