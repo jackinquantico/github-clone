@@ -20,12 +20,16 @@ public class SecurityUtils {
 
     public static UserDetailsImpl getPrincipal() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (UserDetailsImpl) authentication.getPrincipal();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl) {
+            return (UserDetailsImpl) authentication.getPrincipal();
+        }
+        return null;
     }
 
     public static boolean isAuthenticated() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null && authentication.isAuthenticated();
+        return authentication != null && authentication.isAuthenticated()
+                && !(authentication.getPrincipal() instanceof String);
     }
 
     public static class Impl {
@@ -34,6 +38,20 @@ public class SecurityUtils {
                 return SecurityUtils.getPrincipal().getMemberDto();
             }
             return new MemberDto();
+        }
+
+        public static String getMemberSeqInPrinciple() {
+            if (SecurityUtils.getPrincipal() != null) {
+                return SecurityUtils.getPrincipal().getMemberDto().getSeq();
+            }
+            return "";
+        }
+
+        public static String getMemberIdInPrinciple() {
+            if (SecurityUtils.getPrincipal() != null) {
+                return SecurityUtils.getPrincipal().getMemberDto().getMemberId();
+            }
+            return "";
         }
     }
 }

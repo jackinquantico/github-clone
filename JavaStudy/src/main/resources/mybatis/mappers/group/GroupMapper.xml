@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.javastudy.group.service.GroupMapper">
+
+    <sql id="selectGroupListWhereClause">
+        <choose>
+            <when test="@org.apache.commons.lang3.StringUtils@isNotBlank(groupOwner)">
+                AND (TG.VISIBILITY IN ('Public', 'Internal')
+                     OR TG.GROUP_OWNER = #{groupOwner})
+            </when>
+            <otherwise>
+                AND TG.VISIBILITY IN ('Public', 'Internal')
+            </otherwise>
+        </choose>
+    </sql>
+
+    <select id="selectGroupList" resultType="com.example.javastudy.group.model.GroupDto">
+        /* GroupMapper.selectGroupList */
+        SELECT TG.*
+             , IFNULL((SELECT COUNT(TP.SEQ)
+               FROM TB_PROJECT TP
+               WHERE TP.DEL_YN = 'N'
+               AND TP.GROUP_SEQ = TG.SEQ), 0) AS PROJECT_COUNT
+        FROM TB_GROUP TG
+        WHERE TG.DEL_YN = 'N'
+        <include refid="selectGroupListWhereClause" />
+        ORDER BY TG.SEQ DESC
+    </select>
+
+    <select id="selectGroup" resultType="com.example.javastudy.group.model.GroupDto">
+        /* GroupMapper.selectGroup */
+        SELECT TG.*
+        FROM TB_GROUP TG
+        WHERE TG.DEL_YN = 'N'
+        AND TG.GROUP_NAME = #{groupName}
+    </select>
+
+    <insert id="insertGroup">
+        /* GroupMapper.insertGroup */
+        INSERT INTO TB_GROUP ( SEQ
+                             , GROUP_NAME
+                             , GROUP_DESCRIPTION
+                             , GROUP_OWNER
+                             , VISIBILITY
+                             , CREATE_ID
+                             , CREATE_NAME )
+        VALUES ( #{seq}
+               , #{groupName}
+               , #{groupDescription}
+               , #{groupOwner}
+               , #{visibility}
+               , #{createId}
+               , #{createName} )
+    </insert>
+
+    <update id="updateGroup">
+        /* GroupMapper.updateGroup */
+        UPDATE TB_GROUP
+        SET UPDATE_ID         = #{updateId}
+          , UPDATE_NAME       = #{updateName}
+          , UPDATE_DATE       = NOW()
+          , GROUP_DESCRIPTION = #{groupDescription}
+          , VISIBILITY        = #{visibility}
+        WHERE SEQ = #{seq}
+    </update>
+
+    <update id="deleteGroup">
+        /* GroupMapper.deleteGroup */
+        UPDATE TB_GROUP
+        SET DEL_YN      = 'Y'
+          , DELETE_ID   = #{deleteId}
+          , DELETE_NAME = #{deleteName}
+          , DELETE_DATE = NOW()
+        WHERE SEQ = #{seq}
+    </update>
+
+</mapper>

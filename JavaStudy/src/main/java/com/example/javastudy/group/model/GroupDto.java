@@ -1,20 +1,22 @@
-package com.example.javastudy.member.model;
+package com.example.javastudy.group.model;
 
 import com.example.core.utils.Ulid;
+import com.example.javastudy.project.model.ProjectDto;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.List;
 
 /**
- * packageName    : com.example.javastudy.member.model
- * fileName       : MemberDto
+ * packageName    : com.example.javastudy.group.model
+ * fileName       : GroupDto
  * author         : 서채영
- * date           : 2025-03-25
+ * date           : 2025-03-26
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2025-03-25           서채영            최초 생성
+ * 2025-03-26           서채영            최초 생성
  */
 @Getter
 @Setter
@@ -22,18 +24,18 @@ import org.apache.commons.lang3.StringUtils;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberDto {
-    /** SEQ */
+public class GroupDto {
+    /** 그룹_SEQ */
     private String seq;
-    /** 회원 아이디 */
-    private String memberId;
-    /** 회원 이름 */
-    private String memberName;
-    /** 회원 비밀번호 */
-    private String memberPassword;
-    /** 회원 이메일 */
-    private String memberEmail;
-    /** 삭제 여부 */
+    /** 그룹_이름 */
+    private String groupName;
+    /** 그룹_설명 */
+    private String groupDescription;
+    /** 그룹_소유자 */
+    private String groupOwner;
+    /** 공개_여부 */
+    private String visibility;
+    /** 삭제여부 */
     private String delYn;
     /** 등록ID */
     private String createId;
@@ -54,7 +56,9 @@ public class MemberDto {
     /** 삭제일시 */
     private String deleteDate;
 
-    private String groupSeq;
+    private List<GroupMemberDto> memberList;
+    private List<ProjectDto> projectList;
+    private String projectCount; // 프로젝트 개수
 
     public void generateSeq() {
         if (StringUtils.isBlank(seq)) {
@@ -62,13 +66,13 @@ public class MemberDto {
         }
     }
 
-    public MemberVo toEntity() {
-        MemberVo memberVo = MemberVo.builder()
+    public GroupVo toEntity() {
+        GroupVo groupVo = GroupVo.builder()
                 .seq(seq)
-                .memberId(memberId)
-                .memberName(memberName)
-                .memberPassword(memberPassword)
-                .memberEmail(memberEmail)
+                .groupName(groupName)
+                .groupDescription(groupDescription)
+                .groupOwner(groupOwner)
+                .visibility(visibility)
                 .delYn(delYn)
                 .createId(createId)
                 .createName(createName)
@@ -80,6 +84,6 @@ public class MemberDto {
                 .deleteName(deleteName)
                 .deleteDate(deleteDate)
                 .build();
-        return memberVo;
+        return groupVo;
     }
 }

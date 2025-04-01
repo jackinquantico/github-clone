@@ -7,6 +7,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
+<%@ page import="com.example.core.utils.*" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="requestUri"  value="${requestScope.get('javax.servlet.forward.request_uri')}"/>
@@ -20,6 +21,4 @@
 <c:if test="${isAuthenticated and !empty principal and principal.memberDto != null}">
     <c:set var="loginId" value="${CommonUtils.defaultString(principal.memberDto.memberId)}"/>
     <c:set var="loginName" value="${CommonUtils.defaultString(principal.memberDto.memberName)}"/>
-    <c:set var="loginDeptSeq" value="${CommonUtils.defaultString(principal.memberDto.deptSeq)}"/>
-    <c:set var="oprtTssuBankCd" value="${CommonUtils.defaultString(principal.memberDto.oprtTssuBankCd)}"/>
 </c:if>

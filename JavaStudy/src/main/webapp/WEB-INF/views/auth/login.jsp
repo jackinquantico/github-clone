@@ -6,6 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/views/_include/_taglib.jsp" %>
+
+<c:set var="loginId" value="admin" />
+<c:set var="loginPwd" value="1234" />
 
 <div>
     <ul>
@@ -19,13 +23,13 @@
         <tr>
             <th>ID</th>
             <td>
-                <input type="text" name="memberId">
+                <input type="text" name="memberId" value="${ loginId }">
             </td>
         </tr>
         <tr>
             <th>PWD</th>
             <td>
-                <input type="text" name="memberPassword">
+                <input type="text" name="memberPassword" value="${ loginPwd }">
             </td>
         </tr>
     </table>

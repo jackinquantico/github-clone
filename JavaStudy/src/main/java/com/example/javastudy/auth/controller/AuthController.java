@@ -39,15 +39,17 @@ public class AuthController {
     public @ResponseBody AjaxResBody login(@RequestBody AuthDto authDto) {
         boolean result = false;
         String message = "로그인에 실패했습니다.";
+        String callback = "";
 
         try {
             result = authService.processLogin(authDto);
             message = "로그인되었습니다.";
+            callback = "fnRedirectUrl('/')";
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
 
-        return AjaxResBody.toResponse(result, message);
+        return AjaxResBody.toResponse(result, message, callback);
     }
 
     @GetMapping("/logout")
