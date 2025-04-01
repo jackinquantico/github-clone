@@ -67,6 +67,10 @@ public class ProjectDto {
     /** 삭제일시 */
     private String deleteDate;
 
+    // 검색용
+    /** 브랜치_SEQ */
+    private String branchSeq;
+
     public void generateSeq() {
         if (StringUtils.isBlank(seq)) {
             this.seq = Ulid.createUlid();

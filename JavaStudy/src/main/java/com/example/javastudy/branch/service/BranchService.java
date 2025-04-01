@@ -34,9 +34,22 @@ public class BranchService {
         return branchMapper.selectBranch(branchDto);
     }
 
+    private BranchDto selectBranch(String seq) {
+        BranchDto dto = BranchDto.builder().seq(seq).build();
+        return selectBranch(dto);
+    }
+
     public boolean insertBranch(BranchDto dto) {
         dto.generateSeq();
+        if (StringUtils.isNotBlank(dto.getFromBranchSeq())) {
+            BranchDto fromBranch = selectBranch(dto.getFromBranchSeq());
+            dto.setLastCommitSeq(fromBranch.getLastCommitSeq());
+            dto.setLastCommitMessage(fromBranch.getLastCommitMessage());
+            dto.setLastCommitYmd(fromBranch.getLastCommitYmd());
+            dto.setLastCommitHm(fromBranch.getLastCommitHm());
+        }
         branchMapper.insertBranch(dto.toEntity());
+
         return true;
     }
 

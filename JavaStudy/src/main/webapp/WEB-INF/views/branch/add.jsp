@@ -24,6 +24,7 @@
                     <input type="hidden" name="groupName" value="${ info.groupName }">
                     <input type="hidden" name="projectSeq" value="${ info.seq }">
                     <input type="hidden" name="projectName" value="${ info.projectName }">
+                    <input type="hidden" name="fromBranchSeq" value="${ fromBranchSeq }">
                     ${ info.groupName } / ${ info.projectName }
                 </td>
             </tr>

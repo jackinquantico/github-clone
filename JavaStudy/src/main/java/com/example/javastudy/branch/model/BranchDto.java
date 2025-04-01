@@ -67,6 +67,9 @@ public class BranchDto {
     /** 삭제일시 */
     private String deleteDate;
 
+    // 검색용
+    private String fromBranchSeq; // new Branch from 시 사용
+
     public void generateSeq() {
         if (StringUtils.isBlank(seq)) {
             this.seq = Ulid.createUlid();

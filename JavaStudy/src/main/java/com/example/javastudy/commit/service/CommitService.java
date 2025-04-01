@@ -66,10 +66,14 @@ public class CommitService {
         branchService.updateBranch(branch);
 
         BranchDto info = branchService.selectBranch(branch);
-        projectService.updateProject(ProjectDto.builder()
+        ProjectDto projectDto = ProjectDto.builder()
                 .seq(info.getProjectSeq())
                 .lastCommitMessage(lastCommitMessage)
                 .lastCommitYmd(lastCommitYmd)
-                .lastCommitHm(lastCommitHm).build());
+                .lastCommitHm(lastCommitHm).build();
+        if ("Y".equals(info.getIsDefault())) {
+            projectDto.setCommitCount(info.getCommitCount());
+        }
+        projectService.updateProject(projectDto);
     }
 }

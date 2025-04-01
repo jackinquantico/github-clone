@@ -31,14 +31,30 @@
         ORDER BY TP.UPDATE_DATE DESC
     </select>
 
+    <sql id="selectProjectWhereClause">
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(projectName)">
+            AND TP.PROJECT_NAME = #{projectName}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(groupName)">
+            AND TP.GROUP_NAME = #{groupName}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(branchSeq)">
+            AND EXISTS (
+                    SELECT 1
+                    FROM TB_BRANCH TB
+                    WHERE TB.PROJECT_SEQ = TP.SEQ
+                    AND TB.SEQ = #{branchSeq}
+                    AND TB.DEL_YN = 'N'
+                )
+        </if>
+    </sql>
+
     <select id="selectProject" resultType="com.example.javastudy.project.model.ProjectDto">
         /* ProjectMapper.selectProject */
         SELECT TP.*
-             , TG.GROUP_NAME
         FROM TB_PROJECT TP
-        JOIN TB_GROUP TG ON TP.GROUP_SEQ = TG.SEQ
         WHERE TP.DEL_YN = 'N'
-        AND TP.PROJECT_NAME = #{projectName}
+        <include refid="selectProjectWhereClause" />
     </select>
 
     <insert id="insertProject">

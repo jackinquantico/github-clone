@@ -43,6 +43,10 @@
                               , PROJECT_NAME
                               , BRANCH_NAME
                               , IS_DEFAULT
+                              , LAST_COMMIT_SEQ
+                              , LAST_COMMIT_MESSAGE
+                              , LAST_COMMIT_YMD
+                              , LAST_COMMIT_HM
                               , CREATE_ID
                               , CREATE_NAME)
         VALUES ( #{seq}
@@ -52,6 +56,10 @@
                , #{projectName}
                , #{branchName}
                , #{isDefault}
+               , #{lastCommitSeq}
+               , #{lastCommitMessage}
+               , #{lastCommitYmd}
+               , #{lastCommitHm}
                , #{createId}
                , #{createName})
     </insert>
@@ -67,6 +75,7 @@
         </if>
         <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(lastCommitSeq)">
             , LAST_COMMIT_SEQ = #{lastCommitSeq}
+            , COMMIT_COUNT = COMMIT_COUNT + 1
         </if>
         <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(lastCommitMessage)">
             , LAST_COMMIT_MESSAGE = #{lastCommitMessage}
@@ -76,9 +85,6 @@
         </if>
         <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(lastCommitHm)">
             , LAST_COMMIT_HM = #{lastCommitHm}
-        </if>
-        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(commitCount)">
-            , COMMIT_COUNT = COMMIT_COUNT + 1
         </if>
         WHERE SEQ = #{seq}
     </update>

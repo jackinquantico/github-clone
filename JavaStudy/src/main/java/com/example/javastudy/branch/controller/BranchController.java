@@ -9,6 +9,7 @@ import com.example.javastudy.commit.service.CommitService;
 import com.example.javastudy.project.model.ProjectDto;
 import com.example.javastudy.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +45,9 @@ public class BranchController {
     @GetMapping("/add")
     public String add(@ModelAttribute ProjectDto projectDto, Model model) {
         model.addAttribute("info", projectService.selectProject(projectDto));
+        if (StringUtils.isNotBlank(projectDto.getBranchSeq())) {
+            model.addAttribute("fromBranchSeq", projectDto.getBranchSeq());
+        }
         return "branch/add";
     }
 

@@ -36,7 +36,7 @@
         </table>
         <button type="button" onclick="location.href='/group/${ info.groupName }/project/${ info.projectName }/branch/${ info.branchName }/update';">Update</button>
         <button type="button" onclick="fnDelete()">Delete</button>
-        <button type="button" onclick="fnAddBranch('${ info.seq }')">New Branch From</button>
+        <button type="button" onclick="fnAddBranch('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">New Branch From</button>
     </form>
     <table>
         <thead>
@@ -50,7 +50,10 @@
         <c:if test="${ not empty list }">
             <c:forEach var="item" items="${ list }">
             <tr>
-                <td>${ item.commitMessage }</td>
+                <td>
+                    <input type="hidden" name="commitSeq" value="${ item.seq }">
+                    ${ item.commitMessage }
+                </td>
                 <td>${ item.committerId }</td>
                 <td>${ item.commitYmd } ${ item.commitHm }</td>
             </tr>
@@ -139,7 +142,7 @@
     }
 
     /** 브랜치 생성 */
-    function fnAddBranch(branchSeq) {
-
+    function fnAddBranch(groupName, projectName, branchSeq) {
+        location.href = `/group/\${groupName}/project/\${projectName}/branch/add?branchSeq=\${branchSeq}`;
     }
 </script>
