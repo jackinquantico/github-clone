@@ -70,6 +70,8 @@ public class ProjectDto {
     // 검색용
     /** 브랜치_SEQ */
     private String branchSeq;
+    /** 브랜치_개수 */
+    private String branchCount;
 
     public void generateSeq() {
         if (StringUtils.isBlank(seq)) {
