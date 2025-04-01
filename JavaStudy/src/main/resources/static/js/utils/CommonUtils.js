@@ -1,5 +1,5 @@
-function fnAjaxRequest(url, method, data) {
-    $.ajax({
+function fnAjaxRequest(url, method, data, options = {}) {
+    const defaultOptions = {
         url: url,
         method: method,
         data: data,
@@ -12,15 +12,19 @@ function fnAjaxRequest(url, method, data) {
         error: (err) => {
             console.log(err);
         }
-    })
+    };
+
+    const ajaxOptions = Object.assign({}, defaultOptions, options);
+
+    $.ajax(ajaxOptions);
 }
 
-function fnGet(url, data) {
-    fnAjaxRequest(url, 'GET', data);
+function fnGet(url, data, options = {}) {
+    return fnAjaxRequest(url, 'GET', data, options);
 }
 
-function fnPost(url, data) {
-    fnAjaxRequest(url, 'POST', data);
+function fnPost(url, data, options = {}) {
+    return fnAjaxRequest(url, 'POST', data, options);
 }
 
 function fnGetFormData(formId = 'command') {
@@ -37,14 +41,6 @@ function fnRedirectUrl(url) {
 function fnReloadPage() {
     location.reload(true);
 }
-
-const ALLOWED_CALLBACKS = {
-    fnRedirectUrl: fnRedirectUrl,
-    fnReloadPage: fnReloadPage,
-    fnGetList: window.fnGetList,
-    fnDrawGraphByMermaid: window.fnDrawGraphByMermaid,
-    fnDrawGraphByGirGraph: window.fnDrawGraphByGirGraph,
-};
 
 function executeFn(callbackStr, data) {
     if (typeof callbackStr !== "string" || callbackStr.trim() === "") return;
