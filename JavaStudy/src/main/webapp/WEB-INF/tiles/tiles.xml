@@ -31,4 +31,12 @@
         <put-attribute name="contents" value="/WEB-INF/views/home/{1}.jsp" />
     </definition>
 
+    <definition name="*/*" extends="default-layout">
+        <put-attribute name="contents" value="/WEB-INF/views/{1}/{2}.jsp" />
+    </definition>
+
+    <definition name="*/*/*" extends="default-layout">
+        <put-attribute name="contents" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+    </definition>
+
 </tiles-definitions>
