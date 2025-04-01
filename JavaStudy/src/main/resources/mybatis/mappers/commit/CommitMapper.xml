@@ -40,6 +40,28 @@
         ORDER BY SEQ
     </select>
 
+    <select id="selectCommitContributionList" resultType="com.example.javastudy.commit.model.CommitDto">
+        /* CommitMapper.selectCommitContributionList */
+        WITH RECURSIVE date_seq AS (
+            SELECT DATE_SUB(CURDATE(), INTERVAL 364 DAY) AS ymd
+            UNION ALL
+            SELECT DATE_ADD(ymd, INTERVAL 1 DAY)
+            FROM date_seq
+            WHERE ymd <![CDATA[<]]> CURDATE()
+        )
+        SELECT DATE_FORMAT(ymd, '%Y%m%d') AS COMMIT_YMD
+             , IFNULL(commit_count, 0) AS COMMIT_COUNT
+        FROM date_seq
+        LEFT JOIN (
+            SELECT COMMIT_YMD, COUNT(*) AS commit_count
+            FROM tb_commit
+            WHERE DEL_YN = 'N'
+            AND COMMITTER_ID = #{committerId}
+            GROUP BY COMMIT_YMD
+        ) commits ON DATE_FORMAT(ymd, '%Y%m%d') = commits.COMMIT_YMD
+        ORDER BY COMMIT_YMD
+    </select>
+
     <select id="selectCommit" resultType="com.example.javastudy.commit.model.CommitDto">
         /* CommitMapper.selectCommit */
         SELECT TC.*

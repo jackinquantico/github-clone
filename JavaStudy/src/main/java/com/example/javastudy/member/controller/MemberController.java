@@ -1,12 +1,16 @@
 package com.example.javastudy.member.controller;
 
 import com.example.core.cmn.model.AjaxResBody;
+import com.example.javastudy.commit.model.CommitDto;
+import com.example.javastudy.commit.service.CommitService;
 import com.example.javastudy.member.model.MemberDto;
 import com.example.javastudy.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * packageName    : com.example.javastudy.member.controller
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+    private final CommitService commitService;
 
     @GetMapping("/list")
     public String list(@ModelAttribute MemberDto memberDto, Model model) {
@@ -51,6 +56,16 @@ public class MemberController {
         }
 
         return AjaxResBody.toResponse(result, message, callback);
+    }
+
+    @GetMapping("/{seq}")
+    public String view(@ModelAttribute MemberDto memberDto, Model model) {
+        MemberDto info = memberService.selectMember(memberDto);
+        List<CommitDto> list = commitService.selectCommitContributionList(CommitDto.builder().committerId(info.getMemberId()).build());
+        model.addAttribute("info", info);
+        model.addAttribute("list", list);
+
+        return "member/view";
     }
 
     @GetMapping("/update/{seq}")
