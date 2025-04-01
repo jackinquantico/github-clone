@@ -12,5 +12,7 @@
     <script src="/js/libs/jquery-ui.min.js"></script>
     <script src="/js/libs/sweetalert2.all.min.js"></script>
 
+    <script src="/js/utils/CommonUtils.js"></script>
+
     <link href="/css/style.css" rel="stylesheet" type="text/css">
 </head>

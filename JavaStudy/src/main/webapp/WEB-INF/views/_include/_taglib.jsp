@@ -10,3 +10,16 @@
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="requestUri"  value="${requestScope.get('javax.servlet.forward.request_uri')}"/>
+
+<c:set var="isAuthenticated" value="false"/>
+<sec:authorize access="isAuthenticated()">
+    <c:set var="isAuthenticated" value="true"/>
+</sec:authorize>
+
+<sec:authentication property="principal" var="principal"/>
+<c:if test="${isAuthenticated and !empty principal and principal.memberDto != null}">
+    <c:set var="loginId" value="${CommonUtils.defaultString(principal.memberDto.memberId)}"/>
+    <c:set var="loginName" value="${CommonUtils.defaultString(principal.memberDto.memberName)}"/>
+    <c:set var="loginDeptSeq" value="${CommonUtils.defaultString(principal.memberDto.deptSeq)}"/>
+    <c:set var="oprtTssuBankCd" value="${CommonUtils.defaultString(principal.memberDto.oprtTssuBankCd)}"/>
+</c:if>
