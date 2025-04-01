@@ -100,7 +100,7 @@
     function fnDelete() {
         const url = fnGetFormData('deleteForm').getUrl();
         const data = fnGetFormData('deleteForm').getData();
-        fnPost(url, JSON.stringify(data));
+        CommonUtils.fnPost(url, JSON.stringify(data));
     }
 
     function fnGenerateGraphByMermaid() {
@@ -111,7 +111,7 @@
             groupName: groupName,
             projectName: projectName,
         }
-        fnPost(url, JSON.stringify(data));
+        CommonUtils.fnPost(url, JSON.stringify(data));
     }
 
     function fnDrawGraphByMermaid(data) {
@@ -127,63 +127,20 @@
             groupName: groupName,
             projectName: projectName,
         }
-        fnPost(url, JSON.stringify(data));
+        CommonUtils.fnPost(url, JSON.stringify(data));
     }
 
     function fnDrawGraphByGirGraph(commitList) {
-        const withoutHash = GitgraphJS.templateExtend(GitgraphJS.TemplateName.Metro, {
-            commit: {
-                message: {
-                    displayHash: false,
-                    displayAuthor: false,
-                },
-            },
-        });
-
-        const canvas = document.getElementById('gitGraph');
-        const gitgraph = GitgraphJS.createGitgraph(canvas, {
-            orientation: 'vertical-reverse',
-            template: withoutHash,
-        });
-        const branchMap = {};
-
-        branchMap['main'] = gitgraph.branch('main');
-
-        commitList.forEach(commit => {
-            const branchName = commit.branchName;
-            const parentCommitSeq = commit.parentCommitSeq;
-
-            // 브랜치 생성
-            if (!branchMap[branchName]) {
-                // 부모 커밋의 브랜치 찾기
-                const parentBranchName = _findParentBranch(commitList, parentCommitSeq);
-                if (parentBranchName && branchMap[parentBranchName]) {
-                    branchMap[branchName] = branchMap[parentBranchName].branch(branchName);
-                } else {
-                    // fallback
-                    branchMap[branchName] = gitgraph.branch(branchName);
-                }
-
-            }
-
-            // 커밋
-            branchMap[branchName].commit({
-                subject: commit.commitMessage,
-                tag: commit.rebaseOriginSeq ? "rebase" : (commit.mergeFromCommitSeq ? "merge" : undefined),
-            });
-
-            // 머지 처리
-            if (commit.mergeFromCommitSeq) {
-                const mergeBranchName = _findParentBranch(commitList, commit.mergeFromCommitSeq);
-                if (mergeBranchName && branchMap[mergeBranchName]) {
-                    branchMap[branchName].merge(branchMap[mergeBranchName]);
-                }
+        GitGraphBuilder.draw({
+            divId: "gitGraph",
+            commitList: commitList,
+            defaultBranch: "main",
+            options: {
+                orientation: "vertical-reverse",
+                displayHash: false,
+                displayAuthor: false,
+                displayBranchLabel: true,
             }
         });
-
-        function _findParentBranch(commitList, parentSeq) {
-            const parentCommit = commitList.find(c => c.seq === parentSeq);
-            return parentCommit ? parentCommit.branchName : null;
-        }
     }
 </script>

@@ -51,7 +51,7 @@
 
 <script>
     function fnSave() {
-        const url = fnGetFormData('saveForm').getUrl();
+        const url = CommonUtils.fnGetFormData('saveForm').getUrl();
         const memberList = $('#member-list input[type=checkbox]:checked')
             .map((i, el) => {
                 return {
@@ -66,6 +66,6 @@
             return false;
         }
 
-        fnPost(url, JSON.stringify({memberList:memberList,}));
+        CommonUtils.fnPost(url, JSON.stringify({memberList:memberList,}));
     }
 </script>

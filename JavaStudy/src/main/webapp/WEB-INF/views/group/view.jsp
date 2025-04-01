@@ -121,9 +121,9 @@
     });
 
     function fnDelete() {
-        const url = fnGetFormData('saveForm').getUrl();
-        const data = fnGetFormData('saveForm').getData();
-        fnPost(url, JSON.stringify(data));
+        const url = CommonUtils.fnGetFormData('saveForm').getUrl();
+        const data = CommonUtils.fnGetFormData('saveForm').getData();
+        CommonUtils.fnPost(url, JSON.stringify(data));
     }
 
     function fnAddMember(groupName, groupSeq) {
@@ -140,7 +140,7 @@
                 }
             })
             .get();
-        fnPost(url, JSON.stringify({memberList: memberList,}));
+        CommonUtils.fnPost(url, JSON.stringify({memberList: memberList,}));
     }
 
     function fnJoinMember(groupSeq) {
@@ -149,6 +149,6 @@
             groupSeq: groupSeq,
             role: 'Member',
         }
-        fnPost(url, JSON.stringify(data));
+        CommonUtils.fnPost(url, JSON.stringify(data));
     }
 </script>

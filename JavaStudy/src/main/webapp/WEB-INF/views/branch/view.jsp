@@ -92,7 +92,7 @@
     function fnGetList() {
         const url = "/commit/list";
         const branchSeq = $('[name=seq]').val();
-        fnPost(url, JSON.stringify({
+        CommonUtils.fnPost(url, JSON.stringify({
             branchSeq: branchSeq,
         }));
     }
@@ -126,7 +126,7 @@
         const parentCommitSeq = $('#commit-area tr:first').find('[name=commitSeq]');
         const committerId = targetArea.find('[name=committerId]');
         const commitMessage = targetArea.find('[name=commitMessage]');
-        fnPost(url, JSON.stringify({
+        CommonUtils.fnPost(url, JSON.stringify({
             branchSeq: branchSeq,
             parentCommitSeq: parentCommitSeq.val(),
             committerId: committerId.val(),
@@ -138,9 +138,9 @@
 
     /** 브랜치 삭제 */
     function fnDelete() {
-        const url = fnGetFormData('saveForm').getUrl();
-        const data = fnGetFormData('saveForm').getData();
-        fnPost(url, JSON.stringify(data));
+        const url = CommonUtils.fnGetFormData('saveForm').getUrl();
+        const data = CommonUtils.fnGetFormData('saveForm').getData();
+        CommonUtils.fnPost(url, JSON.stringify(data));
     }
 
     /** 브랜치 생성 */

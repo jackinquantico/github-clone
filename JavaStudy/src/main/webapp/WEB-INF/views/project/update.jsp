@@ -51,8 +51,8 @@
 
 <script>
     function fnSave() {
-        const url = fnGetFormData('saveForm').getUrl();
-        const data = fnGetFormData('saveForm').getData();
-        fnPost(url, JSON.stringify(data));
+        const url = CommonUtils.fnGetFormData('saveForm').getUrl();
+        const data = CommonUtils.fnGetFormData('saveForm').getData();
+        CommonUtils.fnPost(url, JSON.stringify(data));
     }
 </script>

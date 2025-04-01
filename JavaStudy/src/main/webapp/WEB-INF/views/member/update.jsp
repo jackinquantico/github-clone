@@ -48,8 +48,8 @@
 
 <script>
     function fnSave() {
-        const url = fnGetFormData().getUrl();
-        const data = fnGetFormData().getData();
-        fnPost(url, JSON.stringify(data));
+        const url = CommonUtils.fnGetFormData().getUrl();
+        const data = CommonUtils.fnGetFormData().getData();
+        CommonUtils.fnPost(url, JSON.stringify(data));
     }
 </script>

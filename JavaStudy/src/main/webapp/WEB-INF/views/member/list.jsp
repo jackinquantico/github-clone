@@ -53,7 +53,7 @@
     function fnUpdate() {
         const selected = $('#memberTable input[type=checkbox]:checked');
         const seq = selected.data('seq');
-        fnRedirectUrl(`/member/update/\${seq}`);
+        CommonUtils.fnRedirectUrl(`/member/update/\${seq}`);
     }
 
     function fnDelete() {
@@ -63,6 +63,6 @@
         const data = {
             seq: seq,
         }
-        fnPost(url, JSON.stringify(data));
+        CommonUtils.fnPost(url, JSON.stringify(data));
     }
 </script>

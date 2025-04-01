@@ -58,3 +58,13 @@ function executeFn(callbackStr, data) {
         console.error("콜백 실행 오류:", e);
     }
 }
+
+export {
+    fnAjaxRequest,
+    fnGet,
+    fnPost,
+    fnGetFormData,
+    fnRedirectUrl,
+    fnReloadPage,
+    executeFn,
+}
