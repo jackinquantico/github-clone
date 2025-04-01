@@ -38,4 +38,6 @@ public class CommitVo {
     private String mergeFromCommitSeq;
     /** 생성일시 */
     private String createDate;
+    /** rebase 시 기존 커밋 SEQ */
+    private String rebaseOriginSeq;
 }

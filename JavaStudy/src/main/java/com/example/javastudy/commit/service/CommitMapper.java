@@ -20,6 +20,10 @@ import java.util.List;
 @Mapper
 public interface CommitMapper {
     List<CommitDto> selectCommitList(CommitDto dto);
+    List<CommitDto> selectRebaseCommitList(CommitDto dto);
+    CommitDto selectCommit(CommitDto commitDto);
 
     void insertCommit(CommitVo entity);
+    void rebaseCommit(CommitVo entity);
+    void deleteCommit(CommitVo entity);
 }

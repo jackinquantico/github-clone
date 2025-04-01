@@ -2,7 +2,6 @@ package com.example.javastudy.branch.controller;
 
 import com.example.core.cmn.model.AjaxResBody;
 import com.example.javastudy.branch.model.BranchDto;
-import com.example.javastudy.branch.model.BranchVo;
 import com.example.javastudy.branch.service.BranchService;
 import com.example.javastudy.commit.model.CommitDto;
 import com.example.javastudy.commit.service.CommitService;
@@ -133,7 +132,30 @@ public class BranchController {
         try {
             result = commitService.insertMergeCommit(branchDto);
             message = "브랜치를 병합했습니다.";
+            callback = "fnRedirectUrl('/group/" + urlInfo.getGroupName() + "/project/" + urlInfo.getProjectName() + "/branch/list')";
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
 
+        return AjaxResBody.toResponse(result, message, callback);
+    }
+
+    @GetMapping("/rebase")
+    public String rebase(@ModelAttribute BranchDto branchDto, Model model) {
+        model.addAttribute("info", branchService.selectBranch(branchDto));
+        model.addAttribute("list", branchService.selectBranchList(branchDto));
+        return "branch/rebase";
+    }
+
+    @PostMapping("/rebase")
+    public @ResponseBody AjaxResBody rebase(@RequestBody BranchDto branchDto, @ModelAttribute BranchDto urlInfo) {
+        boolean result = false;
+        String message = "브랜치 리베이스에 실패했습니다.";
+        String callback = "";
+
+        try {
+            result = commitService.rebaseBranch(branchDto);
+            message = "브랜치를 리베이스했습니다.";
             callback = "fnRedirectUrl('/group/" + urlInfo.getGroupName() + "/project/" + urlInfo.getProjectName() + "/branch/list')";
         } catch (RuntimeException e) {
             e.printStackTrace();

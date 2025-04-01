@@ -7,7 +7,37 @@
         SELECT TC.*
         FROM TB_COMMIT TC
         WHERE TC.BRANCH_SEQ = #{branchSeq}
+        AND TC.DEL_YN = 'N'
         ORDER BY TC.SEQ DESC
+    </select>
+
+    <select id="selectRebaseCommitList" resultType="com.example.javastudy.commit.model.CommitDto">
+        /* CommitMapper.selectRebaseCommitList */
+        WITH RECURSIVE main_commits AS (
+            SELECT SEQ, PARENT_COMMIT_SEQ
+            FROM tb_commit
+            WHERE SEQ = #{fromBranchLastCommitSeq}
+            UNION ALL
+            SELECT C.SEQ, C.PARENT_COMMIT_SEQ
+            FROM tb_commit C
+            JOIN main_commits M ON C.SEQ = M.PARENT_COMMIT_SEQ
+        ),
+        feature_commits AS (
+           SELECT SEQ, PARENT_COMMIT_SEQ, COMMIT_MESSAGE, BRANCH_SEQ
+           FROM tb_commit
+           WHERE SEQ = #{toBranchLastCommitSeq}
+
+           UNION ALL
+
+           SELECT C.SEQ, C.PARENT_COMMIT_SEQ, C.COMMIT_MESSAGE, C.BRANCH_SEQ
+           FROM tb_commit C
+           JOIN feature_commits FC ON C.SEQ = FC.PARENT_COMMIT_SEQ
+           WHERE C.SEQ NOT IN (SELECT SEQ FROM main_commits)
+        )
+
+        SELECT SEQ AS REBASE_ORIGIN_SEQ, PARENT_COMMIT_SEQ
+        FROM feature_commits
+        ORDER BY SEQ
     </select>
 
     <select id="selectCommit" resultType="com.example.javastudy.commit.model.CommitDto">
@@ -36,4 +66,35 @@
                , #{commitHm}
                , #{mergeFromCommitSeq})
     </insert>
+    
+    <insert id="rebaseCommit">
+        /* CommitMapper.rebaseCommit */
+        INSERT INTO TB_COMMIT ( SEQ
+                              , BRANCH_SEQ
+                              , PARENT_COMMIT_SEQ
+                              , COMMIT_MESSAGE
+                              , COMMITTER_ID
+                              , COMMIT_YMD
+                              , COMMIT_HM
+                              , MERGE_FROM_COMMIT_SEQ
+                              , REBASE_ORIGIN_SEQ)
+        SELECT #{seq}
+             , BRANCH_SEQ
+             , PARENT_COMMIT_SEQ
+             , COMMIT_MESSAGE
+             , COMMITTER_ID
+             , COMMIT_YMD
+             , COMMIT_HM
+             , MERGE_FROM_COMMIT_SEQ
+             , #{rebaseOriginSeq}
+        FROM TB_COMMIT
+        WHERE SEQ = #{rebaseOriginSeq}
+    </insert>
+
+    <update id="deleteCommit">
+        /* CommitMapper.deleteCommit */
+        UPDATE TB_COMMIT
+        SET DEL_YN = 'Y'
+        WHERE SEQ = #{rebaseOriginSeq}
+    </update>
 </mapper>

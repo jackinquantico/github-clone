@@ -40,6 +40,11 @@ public class CommitDto {
     private String mergeFromCommitSeq;
     /** 생성일시 */
     private String createDate;
+    /** rebase 시 기존 커밋 SEQ */
+    private String rebaseOriginSeq;
+
+    private String fromBranchLastCommitSeq; // rebase 할 기준 브랜치 (main)
+    private String toBranchLastCommitSeq; // rebase 할 대상 브랜치 (feature)
 
     public void generateSeq() {
         if (StringUtils.isBlank(seq)) {
@@ -58,6 +63,7 @@ public class CommitDto {
                 .commitHm(commitHm)
                 .mergeFromCommitSeq(mergeFromCommitSeq)
                 .createDate(createDate)
+                .rebaseOriginSeq(rebaseOriginSeq)
                 .build();
         return vo;
     }

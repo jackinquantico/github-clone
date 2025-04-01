@@ -38,6 +38,7 @@
         <button type="button" onclick="fnDelete()">Delete</button>
         <button type="button" onclick="fnAddBranch('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">New Branch From</button>
         <button type="button" onclick="fnMerge('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">Merge</button>
+        <button type="button" onclick="fnRebase('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">Rebase</button>
     </form>
     <table>
         <thead>
@@ -150,5 +151,10 @@
     /** 브랜치 merge */
     function fnMerge(groupName, projectName, branchSeq) {
         location.href = `/group/\${groupName}/project/\${projectName}/branch/merge?seq=\${branchSeq}`;
+    }
+
+    /** 브랜치 Rebase */
+    function fnRebase(groupName, projectName, branchSeq) {
+        location.href = `/group/\${groupName}/project/\${projectName}/branch/rebase?seq=\${branchSeq}`;
     }
 </script>

@@ -70,6 +70,7 @@ public class BranchDto {
     // 검색용
     private String fromBranchSeq; // new Branch from, merge 시 사용
     private String fromBranchName;
+    private String fromBranchLastCommitSeq;
 
     public void generateSeq() {
         if (StringUtils.isBlank(seq)) {
