@@ -40,9 +40,47 @@
         <button type="button" onclick="location.href='/group/${info.groupName}/project/${info.projectName}/update';">Update</button>
         <button type="button" onclick="fnDelete()">Delete</button>
     </form>
+    <table>
+        <thead>
+        <tr>
+            <th>Branch Name</th>
+            <th>Last Commit Message</th>
+            <th>Last Commited</th>
+            <th>Commit Count</th>
+        </tr>
+        </thead>
+        <tbody class="list-area">
+        <c:if test="${ not empty list }">
+            <c:forEach var="item" items="${ list }">
+                <tr data-project-name="${ item.projectName }" data-group-name="${ item.groupName }" data-branch-name="${ item.branchName }">
+                    <td>${ item.branchName }</td>
+                    <td>${ item.lastCommitMessage }</td>
+                    <td>${ item.lastCommitYmd } ${ item.lastCommitHm }</td>
+                    <td>${ item.commitCount }</td>
+                </tr>
+            </c:forEach>
+        </c:if>
+        <c:if test="${ empty list }">
+            <tr>
+                <td colspan="4">생성된 브랜치가 없습니다.</td>
+            </tr>
+        </c:if>
+        </tbody>
+    </table>
+    <button type="button" onclick="location.href='/group/${info.groupName}/project/${info.projectName}/branch/add';">Create Branch</button>
 </div>
 
 <script>
+    $(() => {
+        $('.list-area td').on('click', (event) => {
+            const target = $(event.currentTarget).parents('tr');
+            const groupName = target.data('groupName');
+            const projectName = target.data('projectName');
+            const branchName = target.data('branchName');
+            location.href = `/group/\${groupName}/project/\${projectName}/branch/\${branchName}`;
+        })
+    });
+
     function fnDelete() {
         const url = fnGetFormData('deleteForm').getUrl();
         const data = fnGetFormData('deleteForm').getData();

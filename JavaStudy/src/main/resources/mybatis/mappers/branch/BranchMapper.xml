@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.javastudy.branch.service.BranchMapper">
+
+    <sql id="selectBranchListWhereClause">
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(groupName)">
+            AND TB.GROUP_NAME = #{groupName}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(projectName)">
+            AND TB.PROJECT_NAME = #{projectName}
+        </if>
+    </sql>
+
+    <select id="selectBranchList" resultType="com.example.javastudy.branch.model.BranchDto">
+        /* BranchMapper.selectBranchList */
+        SELECT TB.*
+        FROM TB_BRANCH TB
+        WHERE TB.DEL_YN = 'N'
+        <include refid="selectBranchListWhereClause" />
+        ORDER BY IS_DEFAULT DESC, BRANCH_NAME
+    </select>
+
+    <select id="selectBranch" resultType="com.example.javastudy.branch.model.BranchDto">
+        /* BranchMapper.selectBranch */
+        SELECT TB.*
+        FROM TB_BRANCH TB
+        WHERE TB.DEL_YN = 'N'
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(seq)">
+            AND TB.SEQ = #{seq}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(projectName) and @org.apache.commons.lang3.StringUtils@isNotBlank(branchName)">
+            AND TB.PROJECT_NAME = #{projectName}
+            AND TB.BRANCH_NAME = #{branchName}
+        </if>
+    </select>
+
+    <insert id="insertBranch">
+        /* BranchMapper.insertBranch */
+        INSERT INTO TB_BRANCH ( SEQ
+                              , GROUP_SEQ
+                              , GROUP_NAME
+                              , PROJECT_SEQ
+                              , PROJECT_NAME
+                              , BRANCH_NAME
+                              , IS_DEFAULT
+                              , CREATE_ID
+                              , CREATE_NAME)
+        VALUES ( #{seq}
+               , #{groupSeq}
+               , #{groupName}
+               , #{projectSeq}
+               , #{projectName}
+               , #{branchName}
+               , #{isDefault}
+               , #{createId}
+               , #{createName})
+    </insert>
+
+    <update id="updateBranch">
+        /* BranchMapper.updateBranch */
+        UPDATE TB_BRANCH
+        SET UPDATE_ID = #{updateId}
+        , UPDATE_NAME = #{updateName}
+        , UPDATE_DATE = NOW()
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(branchName)">
+            , BRANCH_NAME = #{branchName}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(lastCommitMessage)">
+            , LAST_COMMIT_MESSAGE = #{lastCommitMessage}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(lastCommitYmd)">
+            , LAST_COMMIT_YMD = #{lastCommitYmd}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(lastCommitHm)">
+            , LAST_COMMIT_HM = #{lastCommitHm}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(commitCount)">
+            , COMMIT_COUNT = #{commitCount}
+        </if>
+        WHERE SEQ = #{seq}
+    </update>
+
+    <update id="deleteBranch">
+        /* BranchMapper.deleteBranch */
+        UPDATE TB_BRANCH
+        SET DEL_YN      = 'Y'
+          , DELETE_ID   = #{deleteId}
+          , DELETE_NAME = #{deleteName}
+          , DELETE_DATE = NOW()
+        WHERE SEQ = #{seq}
+    </update>
+
+</mapper>

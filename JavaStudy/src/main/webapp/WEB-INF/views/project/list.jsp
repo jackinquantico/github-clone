@@ -46,5 +46,5 @@
         </c:if>
         </tbody>
     </table>
-    <button type="button" onclick="location.href='/project/add';">Add</button>
+    <button type="button" onclick="location.href='/group/${groupName}/project/add';">Add</button>
 </div>

@@ -1,6 +1,8 @@
 package com.example.javastudy.project.controller;
 
 import com.example.core.cmn.model.AjaxResBody;
+import com.example.javastudy.branch.model.BranchDto;
+import com.example.javastudy.branch.service.BranchService;
 import com.example.javastudy.group.model.GroupDto;
 import com.example.javastudy.group.service.GroupService;
 import com.example.javastudy.project.model.ProjectDto;
@@ -9,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * packageName    : com.example.javastudy.project.controller
@@ -28,6 +32,7 @@ public class ProjectController {
 
     private final GroupService groupService;
     private final ProjectService projectService;
+    private final BranchService branchService;
 
     @GetMapping({"", "/", "/list"})
     public String index(@ModelAttribute ProjectDto dto, Model model) {
@@ -62,7 +67,9 @@ public class ProjectController {
     @GetMapping("/{projectName}")
     public String view(@ModelAttribute ProjectDto dto, Model model) {
         ProjectDto info = projectService.selectProject(dto);
+        List<BranchDto> list = branchService.selectBranchList(BranchDto.builder().groupName(dto.getGroupName()).projectName(dto.getProjectName()).build());
         model.addAttribute("info", info);
+        model.addAttribute("list", list);
         return "project/view";
     }
 

@@ -1,6 +1,8 @@
 package com.example.javastudy.project.service;
 
 import com.example.core.security.SecurityUtils;
+import com.example.javastudy.branch.model.BranchDto;
+import com.example.javastudy.branch.service.BranchService;
 import com.example.javastudy.project.model.ProjectDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import java.util.List;
 public class ProjectService {
 
     private final ProjectMapper projectMapper;
+    private final BranchService branchService;
 
     public List<ProjectDto> selectProjectList(ProjectDto dto) {
         if (SecurityUtils.isAuthenticated()) {
@@ -40,7 +43,26 @@ public class ProjectService {
         dto.setProjectOwner(SecurityUtils.Impl.getMemberIdInPrinciple());
         projectMapper.insertProject(dto.toEntity());
 
+        insertDefaultBranch(selectProject(dto));
+
         return true;
+    }
+
+    private void insertDefaultBranch(ProjectDto dto) {
+        String groupSeq = dto.getGroupSeq();
+        String groupName = dto.getGroupName();
+        String projectSeq = dto.getSeq();
+        String projectName = dto.getProjectName();
+        String defaultBranch = dto.getDefaultBranch();
+        BranchDto branchDto = BranchDto.builder()
+                .groupSeq(groupSeq)
+                .groupName(groupName)
+                .projectSeq(projectSeq)
+                .projectName(projectName)
+                .branchName(defaultBranch)
+                .isDefault("Y")
+                .build();
+        branchService.insertBranch(branchDto);
     }
 
     public boolean updateProject(ProjectDto dto) {
