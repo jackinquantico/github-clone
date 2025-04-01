@@ -45,6 +45,7 @@ public class CommitDto {
 
     private String fromBranchLastCommitSeq; // rebase 할 기준 브랜치 (main)
     private String toBranchLastCommitSeq; // rebase 할 대상 브랜치 (feature)
+    private Integer commitCount;
 
     public void generateSeq() {
         if (StringUtils.isBlank(seq)) {

@@ -42,6 +42,10 @@ public class CommitService {
         return commitMapper.selectRebaseCommitList(dto);
     }
 
+    public List<CommitDto> selectCommitContributionList(CommitDto dto) {
+        return commitMapper.selectCommitContributionList(dto);
+    }
+
     private CommitDto selectCommit(AtomicReference<String> lastCommitSeq) {
         CommitDto commitDto = CommitDto.builder().seq(lastCommitSeq.get()).build();
         return commitMapper.selectCommit(commitDto);

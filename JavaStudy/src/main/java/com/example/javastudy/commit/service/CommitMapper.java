@@ -21,6 +21,7 @@ import java.util.List;
 public interface CommitMapper {
     List<CommitDto> selectCommitList(CommitDto dto);
     List<CommitDto> selectRebaseCommitList(CommitDto dto);
+    List<CommitDto> selectCommitContributionList(CommitDto dto);
     CommitDto selectCommit(CommitDto commitDto);
 
     void insertCommit(CommitVo entity);

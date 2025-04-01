@@ -47,4 +47,18 @@ public class CommonUtils {
     public static String defaultString(String value) {
         return StringUtils.defaultString(value);
     }
+
+    public static String getGraphLevel(Integer commitCount) {
+        String level = "level0";
+        if (commitCount > 15) {
+            level = "level4";
+        } else if (commitCount > 10) {
+            level = "level3";
+        } else if (commitCount > 5) {
+            level = "level2";
+        } else if (commitCount > 0) {
+            level = "level1";
+        }
+        return level;
+    }
 }

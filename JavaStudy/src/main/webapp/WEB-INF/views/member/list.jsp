@@ -42,7 +42,7 @@
     <div class="flex flex-wrap gap-4">
         <c:if test="${ not empty list }">
             <c:forEach var="item" items="${ list }">
-                <div class="github-card w-full md:w-[calc(50%-0.5rem)]">
+                <div class="github-card w-full md:w-[calc(50%-0.5rem)] member-view">
                     <div class="flex justify-between items-start mb-2">
                         <div>
                             <div class="flex items-center">
@@ -75,6 +75,15 @@
 </div>
 
 <script>
+    $(() => {
+        $('.member-view').on('click', (event) => {
+            const target = $(event.currentTarget);
+            const seq = target.find('input[type=checkbox]').data('seq');
+
+            CommonUtils.fnRedirectUrl(`/member/\${seq}`);
+        });
+    })
+
     function fnUpdate() {
         const selected = $('#memberTable input[type=checkbox]:checked');
         const seq = selected.data('seq');
