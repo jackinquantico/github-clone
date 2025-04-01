@@ -38,6 +38,11 @@ public class MemberService {
         return selectMember(memberDto);
     }
 
+    public MemberDto selectMemberById(String memberId) {
+        MemberDto memberDto = MemberDto.builder().memberId(memberId).build();
+        return selectMember(memberDto);
+    }
+
     public boolean insertMember(MemberDto memberDto) {
         memberDto.generateSeq();
         memberDto.setMemberPassword(passwordEncoder.encode(memberDto.getMemberPassword()));

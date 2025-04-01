@@ -15,7 +15,12 @@
         SELECT TM.*
         FROM TB_MEMBER TM
         WHERE TM.DEL_YN = 'N'
-        AND TM.SEQ = #{seq}
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(seq)">
+            AND TM.SEQ = #{seq}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(memberId)">
+            AND TM.MEMBER_ID = #{memberId}
+        </if>
     </select>
 
     <insert id="insertMember">
