@@ -20,9 +20,15 @@
         <table>
             <tr>
                 <th>프로젝트 그룹</th>
-                <td>${ info.groupName }</td>
+                <td>
+                    <input type="hidden" name="groupName" value="${ info.groupName }">
+                    ${ info.groupName }
+                </td>
                 <th>프로젝트 이름</th>
-                <td>${ info.projectName }</td>
+                <td>
+                    <input type="hidden" name="projectName" value="${ info.projectName }">
+                    ${ info.projectName }
+                </td>
             </tr>
             <tr>
                 <th>프로젝트 설명</th>
@@ -70,6 +76,13 @@
     <button type="button" onclick="location.href='/group/${info.groupName}/project/${info.projectName}/branch/add';">Create Branch</button>
 </div>
 
+<pre class="mermaid"></pre>
+
+<%--<div id="graph-container" style="width:400px; height:800px; overflow: hidden; position: relative;">--%>
+    <div id="gitGraph" style="transform: scale(0.7); transform-origin: top left;"></div>
+<%--</div>--%>
+
+
 <script>
     $(() => {
         $('.list-area td').on('click', (event) => {
@@ -79,11 +92,98 @@
             const branchName = target.data('branchName');
             location.href = `/group/\${groupName}/project/\${projectName}/branch/\${branchName}`;
         })
+
+        fnGenerateGraphByMermaid();
+        fnGenerateGraphByGitGraph();
     });
 
     function fnDelete() {
         const url = fnGetFormData('deleteForm').getUrl();
         const data = fnGetFormData('deleteForm').getData();
         fnPost(url, JSON.stringify(data));
+    }
+
+    function fnGenerateGraphByMermaid() {
+        const groupName = $('[name=groupName]').val();
+        const projectName = $('[name=projectName]').val();
+        const url = `/group/\${groupName}/project/\${projectName}/commit-graph/mermaid`;
+        const data = {
+            groupName: groupName,
+            projectName: projectName,
+        }
+        fnPost(url, JSON.stringify(data));
+    }
+
+    function fnDrawGraphByMermaid(data) {
+        $('.mermaid').text(data)
+        mermaid.init(undefined, ".mermaid");
+    }
+
+    function fnGenerateGraphByGitGraph() {
+        const groupName = $('[name=groupName]').val();
+        const projectName = $('[name=projectName]').val();
+        const url = `/group/\${groupName}/project/\${projectName}/commit-graph/gitgraph`;
+        const data = {
+            groupName: groupName,
+            projectName: projectName,
+        }
+        fnPost(url, JSON.stringify(data));
+    }
+
+    function fnDrawGraphByGirGraph(commitList) {
+        const withoutHash = GitgraphJS.templateExtend(GitgraphJS.TemplateName.Metro, {
+            commit: {
+                message: {
+                    displayHash: false,
+                    displayAuthor: false,
+                },
+            },
+        });
+
+        const canvas = document.getElementById('gitGraph');
+        const gitgraph = GitgraphJS.createGitgraph(canvas, {
+            orientation: 'vertical-reverse',
+            template: withoutHash,
+        });
+        const branchMap = {};
+
+        branchMap['main'] = gitgraph.branch('main');
+
+        commitList.forEach(commit => {
+            const branchName = commit.branchName;
+            const parentCommitSeq = commit.parentCommitSeq;
+
+            // 브랜치 생성
+            if (!branchMap[branchName]) {
+                // 부모 커밋의 브랜치 찾기
+                const parentBranchName = _findParentBranch(commitList, parentCommitSeq);
+                if (parentBranchName && branchMap[parentBranchName]) {
+                    branchMap[branchName] = branchMap[parentBranchName].branch(branchName);
+                } else {
+                    // fallback
+                    branchMap[branchName] = gitgraph.branch(branchName);
+                }
+
+            }
+
+            // 커밋
+            branchMap[branchName].commit({
+                subject: commit.commitMessage,
+                tag: commit.rebaseOriginSeq ? "rebase" : (commit.mergeFromCommitSeq ? "merge" : undefined),
+            });
+
+            // 머지 처리
+            if (commit.mergeFromCommitSeq) {
+                const mergeBranchName = _findParentBranch(commitList, commit.mergeFromCommitSeq);
+                if (mergeBranchName && branchMap[mergeBranchName]) {
+                    branchMap[branchName].merge(branchMap[mergeBranchName]);
+                }
+            }
+        });
+
+        function _findParentBranch(commitList, parentSeq) {
+            const parentCommit = commitList.find(c => c.seq === parentSeq);
+            return parentCommit ? parentCommit.branchName : null;
+        }
     }
 </script>
