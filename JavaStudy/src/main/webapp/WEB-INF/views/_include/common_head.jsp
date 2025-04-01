@@ -11,7 +11,10 @@
     <script src="/js/libs/jquery.serialize-object.js"></script>
     <script src="/js/libs/jquery-ui.min.js"></script>
     <script src="/js/libs/sweetalert2.all.min.js"></script>
+
+    <%-- Graph --%>
     <script src="https://cdn.jsdelivr.net/npm/mermaid@11.6.0/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@gitgraph/js"></script>
 
     <script src="/js/utils/CommonUtils.js"></script>
 

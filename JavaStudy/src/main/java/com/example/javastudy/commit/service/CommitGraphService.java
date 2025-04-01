@@ -1,11 +1,13 @@
 package com.example.javastudy.commit.service;
 
 import com.example.javastudy.commit.model.CommitGraphDto;
+import com.example.javastudy.commit.utils.GitGraphDataBuilder;
 import com.example.javastudy.commit.utils.MermaidBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * packageName    : com.example.javastudy.commit.service
@@ -27,9 +29,15 @@ public class CommitGraphService {
         return commitGraphMapper.selectCommitGraphList(commitGraphDto);
     }
 
-    public String generateCommitGraph(CommitGraphDto commitGraphDto) {
+    public String generateCommitGraphByMermaid(CommitGraphDto commitGraphDto) {
         List<CommitGraphDto> list = selectCommitGraphList(commitGraphDto);
         MermaidBuilder builder = new MermaidBuilder(list);
+        return builder.build();
+    }
+
+    public List<Map<String, Object>> generateCommitGraphByGitGraph(CommitGraphDto commitGraphDto) {
+        List<CommitGraphDto> list = selectCommitGraphList(commitGraphDto);
+        GitGraphDataBuilder builder = new GitGraphDataBuilder(list);
         return builder.build();
     }
 }
