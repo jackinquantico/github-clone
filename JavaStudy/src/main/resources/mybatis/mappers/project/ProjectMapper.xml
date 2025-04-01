@@ -24,11 +24,27 @@
     <select id="selectProjectList" resultType="com.example.javastudy.project.model.ProjectDto">
         /* ProjectMapper.selectProjectList */
         SELECT TP.*
+             , (SELECT COUNT(1)
+                FROM TB_BRANCH TB
+                WHERE TB.DEL_YN = 'N'
+                AND TB.PROJECT_SEQ = TP.SEQ) AS BRANCH_COUNT
         FROM TB_PROJECT TP
         JOIN TB_GROUP TG ON TG.DEL_YN = 'N' AND TP.GROUP_SEQ = TG.SEQ
         WHERE TP.DEL_YN = 'N'
         <include refid="selectProjectListWhereClause" />
-        ORDER BY TP.UPDATE_DATE DESC
+        <choose>
+            <when test="@org.apache.commons.lang3.StringUtils@isNotBlank(commitCount)">
+                ORDER BY TP.COMMIT_COUNT DESC
+                LIMIT 5
+            </when>
+            <when test="@org.apache.commons.lang3.StringUtils@isNotBlank(lastCommitYmd)">
+                ORDER BY TP.LAST_COMMIT_YMD DESC
+                LIMIT 5
+            </when>
+            <otherwise>
+                ORDER BY TP.UPDATE_DATE DESC
+            </otherwise>
+        </choose>
     </select>
 
     <sql id="selectProjectWhereClause">
