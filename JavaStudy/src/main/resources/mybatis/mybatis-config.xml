@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <settings>
+        <!-- http://www.mybatis.org/mybatis-3/ko/configuration.html#settings -->
+        <!--
+            - lazyLoadingEnabled : 지연로딩을 사용할지에 대한 여부
+                - 지연 로딩
+                    - 객체의 필드를 처음으로 접근할 때까지 해당 필드를 로드하지 않고, 필요한 시점에서 데이터를 로드하는 방법
+                    - 객체의 성능을 향상시키고 메모리 사용을 줄이는 데 도움이 됨
+            - aggressiveLazyLoading : 활성화되면 모든 lazy properties 가진 객체는 메서드 호출에 따라 로드
+            - useGeneratedKeys : 생성키에 대한 JDBC 지원을 허용
+            - defaultStatementTimeout : 데이터베이스로의 응답을 얼마나 오래 기다릴지를 판단하는 타임아웃을 설정
+            - defaultFetchSize : 결과를 가져오는 크기를 제어하는 힌트처럼 드라이버에 설정
+            - mapUnderscoreToCamelCase : 전통적인 데이터베이스 칼럼명 형태를 카멜 케이스 형태의 자바 프로퍼티 형태로 자동 매핑
+            - jdbcTypeForNull : JDBC타입을 파라미터에 제공하지 않을때 null값을 처리한 JDBC타입을 명시
+         -->
+        <setting name="lazyLoadingEnabled"        value="true"/>
+        <setting name="aggressiveLazyLoading"     value="true"/>
+        <setting name="useGeneratedKeys"          value="true"/>
+        <setting name="defaultStatementTimeout"   value="25"/>
+        <setting name="defaultFetchSize"          value="100"/>
+        <setting name="mapUnderscoreToCamelCase"  value="true"/>
+        <setting name="jdbcTypeForNull"           value="NULL"/>
+    </settings>
+
+</configuration>

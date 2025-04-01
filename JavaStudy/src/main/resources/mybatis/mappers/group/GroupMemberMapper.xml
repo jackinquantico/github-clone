@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.javastudy.group.service.GroupMemberMapper">
+
+    <sql id="selectGroupMemberListWhereClause">
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(groupSeq)">
+            AND TGM.GROUP_SEQ = #{groupSeq}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(memberSeq)">
+            AND TGM.MEMBER_SEQ = #{memberSeq}
+        </if>
+    </sql>
+
+    <select id="selectGroupMemberList" resultType="com.example.javastudy.group.model.GroupMemberDto">
+        /* GroupMemberMapper.selectGroupMemberList */
+        SELECT TGM.*
+             , TM.MEMBER_ID
+             , TM.MEMBER_NAME
+             , TM.MEMBER_EMAIL
+        FROM TB_GROUP_MEMBER TGM
+        JOIN TB_MEMBER TM ON TGM.MEMBER_SEQ = TM.SEQ
+        WHERE TGM.DEL_YN = 'N'
+        <include refid="selectGroupMemberListWhereClause" />
+    </select>
+
+    <select id="selectGroupMember" resultType="com.example.javastudy.group.model.GroupMemberDto">
+        /* GroupMemberMapper.selectGroupMember */
+        SELECT TGM.*
+             , TM.MEMBER_ID
+             , TM.MEMBER_NAME
+             , TM.MEMBER_EMAIL
+        FROM TB_GROUP_MEMBER TGM
+        JOIN TB_MEMBER TM ON TGM.MEMBER_SEQ = TM.SEQ
+        WHERE TGM.DEL_YN = 'N'
+          AND TGM.GROUP_SEQ = #{groupSeq}
+          AND TGM.MEMBER_SEQ = #{memberSeq}
+    </select>
+
+    <insert id="insertGroupMember">
+        /* GroupMemberMapper.insertGroupMember */
+        INSERT INTO TB_GROUP_MEMBER ( MEMBER_SEQ
+                                    , GROUP_SEQ
+                                    , ROLE
+                                    , CREATE_ID
+                                    , CREATE_NAME)
+            VALUE ( #{memberSeq}
+                  , #{groupSeq}
+                  , #{role}
+                  , #{createId}
+                  , #{createName} )
+    </insert>
+
+    <update id="updateGroupMember">
+        UPDATE TB_GROUP_MEMBER
+        SET UPDATE_ID   = #{updateId}
+          , UPDATE_NAME = #{updateName}
+          , UPDATE_DATE = NOW()
+          , ROLE        = #{role}
+        WHERE MEMBER_SEQ = #{memberSeq}
+          AND GROUP_SEQ = #{groupSeq}
+    </update>
+
+    <update id="deleteGroupMember">
+        UPDATE TB_GROUP_MEMBER
+        SET DELETE_ID   = #{deleteId}
+          , DELETE_NAME = #{deleteName}
+          , DELETE_DATE = NOW()
+          , DEL_YN      = 'Y'
+        WHERE MEMBER_SEQ = #{memberSeq}
+          AND GROUP_SEQ = #{groupSeq}
+    </update>
+
+</mapper>

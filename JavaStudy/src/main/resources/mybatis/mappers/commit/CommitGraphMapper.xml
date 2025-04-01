@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.javastudy.commit.service.CommitGraphMapper">
+
+    <select id="selectCommitGraphList" resultType="com.example.javastudy.commit.model.CommitGraphDto">
+        SELECT C.SEQ
+            , C.BRANCH_SEQ
+            , B.BRANCH_NAME
+            , C.PARENT_COMMIT_SEQ
+            , C.MERGE_FROM_COMMIT_SEQ
+            , C.REBASE_ORIGIN_SEQ
+            , C.COMMIT_MESSAGE
+        FROM tb_commit C
+        JOIN tb_branch B ON C.BRANCH_SEQ = B.SEQ
+        WHERE C.DEL_YN = 'N'
+        AND B.GROUP_NAME = #{groupName}
+        AND B.PROJECT_NAME = #{projectName}
+        ORDER BY C.SEQ
+    </select>
+
+</mapper>

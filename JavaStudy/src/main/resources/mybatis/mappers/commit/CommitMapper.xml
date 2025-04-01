@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.javastudy.commit.service.CommitMapper">
+
+    <select id="selectCommitList" resultType="com.example.javastudy.commit.model.CommitDto">
+        /* CommitMapper.selectCommitList */
+        SELECT TC.*
+        FROM TB_COMMIT TC
+        WHERE TC.BRANCH_SEQ = #{branchSeq}
+        AND TC.DEL_YN = 'N'
+        ORDER BY TC.SEQ DESC
+    </select>
+
+    <select id="selectRebaseCommitList" resultType="com.example.javastudy.commit.model.CommitDto">
+        /* CommitMapper.selectRebaseCommitList */
+        WITH RECURSIVE main_commits AS (
+            SELECT SEQ, PARENT_COMMIT_SEQ
+            FROM tb_commit
+            WHERE SEQ = #{fromBranchLastCommitSeq}
+            UNION ALL
+            SELECT C.SEQ, C.PARENT_COMMIT_SEQ
+            FROM tb_commit C
+            JOIN main_commits M ON C.SEQ = M.PARENT_COMMIT_SEQ
+        ),
+        feature_commits AS (
+           SELECT SEQ, PARENT_COMMIT_SEQ, COMMIT_MESSAGE, BRANCH_SEQ
+           FROM tb_commit
+           WHERE SEQ = #{toBranchLastCommitSeq}
+
+           UNION ALL
+
+           SELECT C.SEQ, C.PARENT_COMMIT_SEQ, C.COMMIT_MESSAGE, C.BRANCH_SEQ
+           FROM tb_commit C
+           JOIN feature_commits FC ON C.SEQ = FC.PARENT_COMMIT_SEQ
+           WHERE C.SEQ NOT IN (SELECT SEQ FROM main_commits)
+        )
+
+        SELECT SEQ AS REBASE_ORIGIN_SEQ, PARENT_COMMIT_SEQ
+        FROM feature_commits
+        ORDER BY SEQ
+    </select>
+
+    <select id="selectCommitContributionList" resultType="com.example.javastudy.commit.model.CommitDto">
+        /* CommitMapper.selectCommitContributionList */
+        WITH RECURSIVE date_seq AS (
+            SELECT DATE_SUB(CURDATE(), INTERVAL 364 DAY) AS ymd
+            UNION ALL
+            SELECT DATE_ADD(ymd, INTERVAL 1 DAY)
+            FROM date_seq
+            WHERE ymd <![CDATA[<]]> CURDATE()
+        )
+        SELECT DATE_FORMAT(ymd, '%Y%m%d') AS COMMIT_YMD
+             , IFNULL(commit_count, 0) AS COMMIT_COUNT
+        FROM date_seq
+        LEFT JOIN (
+            SELECT COMMIT_YMD, COUNT(*) AS commit_count
+            FROM tb_commit
+            WHERE DEL_YN = 'N'
+            AND COMMITTER_ID = #{committerId}
+            GROUP BY COMMIT_YMD
+        ) commits ON DATE_FORMAT(ymd, '%Y%m%d') = commits.COMMIT_YMD
+        ORDER BY COMMIT_YMD
+    </select>
+
+    <select id="selectCommit" resultType="com.example.javastudy.commit.model.CommitDto">
+        /* CommitMapper.selectCommit */
+        SELECT TC.*
+        FROM TB_COMMIT TC
+        WHERE TC.SEQ = #{seq}
+    </select>
+
+    <insert id="insertCommit">
+        /* CommitMapper.insertCommit */
+        INSERT INTO TB_COMMIT ( SEQ
+                              , BRANCH_SEQ
+                              , PARENT_COMMIT_SEQ
+                              , COMMIT_MESSAGE
+                              , COMMITTER_ID
+                              , COMMIT_YMD
+                              , COMMIT_HM
+                              , MERGE_FROM_COMMIT_SEQ)
+        VALUES ( #{seq}
+               , #{branchSeq}
+               , #{parentCommitSeq}
+               , #{commitMessage}
+               , #{committerId}
+               , #{commitYmd}
+               , #{commitHm}
+               , #{mergeFromCommitSeq})
+    </insert>
+    
+    <insert id="rebaseCommit">
+        /* CommitMapper.rebaseCommit */
+        INSERT INTO TB_COMMIT ( SEQ
+                              , BRANCH_SEQ
+                              , PARENT_COMMIT_SEQ
+                              , COMMIT_MESSAGE
+                              , COMMITTER_ID
+                              , COMMIT_YMD
+                              , COMMIT_HM
+                              , MERGE_FROM_COMMIT_SEQ
+                              , REBASE_ORIGIN_SEQ)
+        SELECT #{seq}
+             , BRANCH_SEQ
+             , PARENT_COMMIT_SEQ
+             , COMMIT_MESSAGE
+             , COMMITTER_ID
+             , COMMIT_YMD
+             , COMMIT_HM
+             , MERGE_FROM_COMMIT_SEQ
+             , #{rebaseOriginSeq}
+        FROM TB_COMMIT
+        WHERE SEQ = #{rebaseOriginSeq}
+    </insert>
+
+    <update id="deleteCommit">
+        /* CommitMapper.deleteCommit */
+        UPDATE TB_COMMIT
+        SET DEL_YN = 'Y'
+        WHERE SEQ = #{rebaseOriginSeq}
+    </update>
+</mapper>
