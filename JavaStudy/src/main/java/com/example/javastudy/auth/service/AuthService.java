@@ -6,6 +6,10 @@ import com.example.javastudy.member.model.MemberDto;
 import com.example.javastudy.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,25 +31,18 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final MemberService memberService;
+    private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
     public boolean processLogin(AuthDto authDto) {
-        MemberDto memberDto = memberService.selectMemberById(authDto.getMemberId());
-        if (memberDto == null) return false;
-        if (!isMatchPassword(authDto.getMemberPassword(), memberDto.getMemberPassword())) return false;
-
-        HttpSession session = CommonUtils.getSession();
-        session.setAttribute("loginMember", memberDto);
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(authDto.getMemberId(), authDto.getMemberPassword());
+        Authentication auth = authenticationManager.authenticate(token);
+        SecurityContextHolder.getContext().setAuthentication(auth);
         return true;
     }
 
     public void processLogout() {
         HttpSession session = CommonUtils.getSession();
         session.invalidate();
-    }
-
-    private boolean isMatchPassword(String rawPwd, String encodedPwd) {
-        return passwordEncoder.matches(rawPwd, encodedPwd);
     }
 }

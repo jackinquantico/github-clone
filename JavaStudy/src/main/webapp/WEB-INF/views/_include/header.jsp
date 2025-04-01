@@ -8,11 +8,11 @@
         </h1>
     </div>
     <div>
-        <c:if test="${ empty loginMember }">
+        <c:if test="${ !isAuthenticated }">
             <a href="/auth/login">로그인</a>
             <a href="/auth/join">회원가입</a>
         </c:if>
-        <c:if test="${ not empty loginMember }">
+        <c:if test="${ isAuthenticated }">
             <a href="/auth/logout">로그아웃</a>
         </c:if>
     </div>
