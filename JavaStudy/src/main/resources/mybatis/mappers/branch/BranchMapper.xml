@@ -28,7 +28,8 @@
         <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(seq)">
             AND TB.SEQ = #{seq}
         </if>
-        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(projectName) and @org.apache.commons.lang3.StringUtils@isNotBlank(branchName)">
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(groupName) and @org.apache.commons.lang3.StringUtils@isNotBlank(projectName) and @org.apache.commons.lang3.StringUtils@isNotBlank(branchName)">
+            AND TB.GROUP_NAME = #{groupName}
             AND TB.PROJECT_NAME = #{projectName}
             AND TB.BRANCH_NAME = #{branchName}
         </if>

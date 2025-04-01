@@ -27,7 +27,7 @@ public class AuthController {
 
     @GetMapping("/join")
     public String join() {
-        return "member/add";
+        return "auth/add";
     }
 
     @GetMapping("/login")

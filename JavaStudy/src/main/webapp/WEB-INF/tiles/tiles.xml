@@ -5,6 +5,16 @@
     <definition name="default-layout" template="/WEB-INF/tiles/template/default-layout.jsp">
         <put-attribute name="common-head"   value="/WEB-INF/views/_include/common_head.jsp" />
         <put-attribute name="header"        value="/WEB-INF/views/_include/header.jsp" />
+        <put-attribute name="navbar"        value="/WEB-INF/views/_include/navbar.jsp" />
+        <put-attribute name="sidebar"        value="/WEB-INF/views/_include/sidebar.jsp" />
+        <put-attribute name="contents"      value="" />
+        <put-attribute name="footer"        value="/WEB-INF/views/_include/footer.jsp" />
+    </definition>
+
+    <definition name="login-layout" template="/WEB-INF/tiles/template/login-layout.jsp">
+        <put-attribute name="common-head"   value="/WEB-INF/views/_include/common_head.jsp" />
+        <put-attribute name="header"        value="/WEB-INF/views/_include/header.jsp" />
+        <put-attribute name="navbar"        value="/WEB-INF/views/_include/navbar.jsp" />
         <put-attribute name="contents"      value="" />
         <put-attribute name="footer"        value="/WEB-INF/views/_include/footer.jsp" />
     </definition>
@@ -24,6 +34,11 @@
 
     <definition name="*/*/*/popup/*" extends="popup-layout">
         <put-attribute name="contents" value="/WEB-INF/views/{1}/{2}/{3}/popup/{4}.jsp" />
+    </definition>
+
+    <!-- Login page -->
+    <definition name="auth/*" extends="login-layout">
+        <put-attribute name="contents" value="/WEB-INF/views/auth/{1}.jsp" />
     </definition>
 
     <!-- home page -->

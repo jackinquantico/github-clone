@@ -6,7 +6,7 @@ function fnAjaxRequest(url, method, data, options = {}) {
         contentType: "application/json",
         success: (resp) => {
             if (resp.callback) {
-                executeFn(resp.callback, resp.data);
+                executeFn(resp.callback, resp.data, window.CallbackMap);
             }
         },
         error: (err) => {
@@ -42,18 +42,30 @@ function fnReloadPage() {
     location.reload(true);
 }
 
-function executeFn(callbackStr, data) {
+function executeFn(callbackStr, data, callbackMap = {}) {
     if (typeof callbackStr !== "string" || callbackStr.trim() === "") return;
 
-    // 1. __DATA__ 치환 (객체 통째로 넘길 수 있게)
-    let finalCode = callbackStr.includes("__DATA__")
+    // 1. __DATA__ 치환
+    const finalCode = callbackStr.includes("__DATA__")
         ? callbackStr.replace("__DATA__", JSON.stringify(data))
         : callbackStr;
 
+    // 2. 함수명 추출 시 괄호 포함된 경우만 분기
+    const isFunctionCall = /\w+\s*\(.*\)/.test(finalCode);
+    const fnName = isFunctionCall ? finalCode.split("(")[0].trim() : null;
+    const fn = fnName ? callbackMap[fnName] : null;
+
     try {
-        // 2. 코드 실행 (함수 호출 or location.href 등 처리 가능)
-        const fn = new Function(finalCode);
-        fn();
+        if (typeof fn === "function") {
+            // 3. 함수 실행
+            const argsString = finalCode.slice(fnName.length);
+            const fnWithArgs = new Function("fn", `return fn${argsString}`);
+            fnWithArgs(fn);
+        } else {
+            // 4. 일반 코드 실행 (ex: location.href = '/')
+            const runCode = new Function(finalCode);
+            runCode();
+        }
     } catch (e) {
         console.error("콜백 실행 오류:", e);
     }

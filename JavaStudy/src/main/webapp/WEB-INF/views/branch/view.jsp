@@ -8,80 +8,120 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/_include/_taglib.jsp" %>
 
-<div>
-    <ul>
-        <li>View</li>
-    </ul>
+<!-- Title -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+    <div>
+        <h1 class="text-2xl font-semibold text-white">View Branch</h1>
+    </div>
+    <div class="flex gap-3" style="flex-direction: column; align-items: flex-end;">
+        <div>
+        <button class="github-btn-primary flex-1 md:flex-none" onclick="location.href='/group/${ info.groupName }/project/${ info.projectName }/branch/${ info.branchName }/update';">
+            Update Branch
+        </button>
+        <button class="github-btn-secondary flex-1 md:flex-none" onclick="fnDelete()">
+            Delete Branch
+        </button>
+        </div>
+        <div>
+        <button class="github-btn-primary flex-1 md:flex-none" onclick="fnAddBranch('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">
+            New Branch From
+        </button>
+        <button class="github-btn-primary flex-1 md:flex-none" onclick="fnMerge('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">
+            Merge Branch
+        </button>
+        <button class="github-btn-primary flex-1 md:flex-none" onclick="fnRebase('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">
+            Rebase Branch
+        </button>
+        </div>
+    </div>
 </div>
+<hr class="border-github-border" />
 
-<div>
+<div class="space-y-4">
     <form id="saveForm" action="/group/${ info.groupName }/project/${ info.projectName }/branch/${ info.branchName }/delete" method="post">
         <input type="hidden" name="seq" value="${ info.seq }">
-        <table>
-            <tr>
-                <th>그룹 / 프로젝트</th>
-                <td colspan="3">
-                    ${ info.groupName } / ${ info.projectName }
-                </td>
-            </tr>
-            <tr>
-                <th>브랜치 이름</th>
-                <td>${ info.branchName }
-                </td>
-                <th>기본 브랜치 여부</th>
-                <td>
-                    <label><input type="checkbox" name="isDefault" value="Y" ${ CommonUtils.checked(info.isDefault, 'Y') } disabled> 기본 브랜치</label>
-                </td>
-            </tr>
-        </table>
-        <button type="button" onclick="location.href='/group/${ info.groupName }/project/${ info.projectName }/branch/${ info.branchName }/update';">Update</button>
-        <button type="button" onclick="fnDelete()">Delete</button>
-        <button type="button" onclick="fnAddBranch('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">New Branch From</button>
-        <button type="button" onclick="fnMerge('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">Merge</button>
-        <button type="button" onclick="fnRebase('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">Rebase</button>
+        <div class="flex flex-wrap gap-4 md:w-[calc(100%-0.5rem)]">
+            <div class="github-card w-full">
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <div class="flex items-center">Group / Project</div>
+                        <div class="flex items-center text-white">
+                            ${ info.groupName } / ${ info.projectName }
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <div class="flex items-center">Branch Name</div>
+                        <div class="flex items-center text-white">
+                            ${ info.branchName }
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <div class="flex items-center">Default Branch</div>
+                        <div class="github-form-group">
+                            <label class="github-checkbox-container mb-2">
+                                is Default
+                                <input type="checkbox" name="isDefault" value="Y" ${ CommonUtils.checked(info.isDefault, 'Y') } disabled>
+                                <span class="github-checkbox-checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
-    <table>
-        <thead>
-        <tr>
-            <th>Commit Message</th>
-            <th>Commiter</th>
-            <th>Commited At</th>
-        </tr>
-        </thead>
-        <tbody id="commit-area">
+</div>
+
+<!-- Add commit -->
+<div id="add-commit" class="space-y-4">
+    <div class="flex flex-wrap gap-4">
+        <div class="github-card w-full md:w-[calc(100%-0.5rem)]">
+            <div class="flex justify-between items-start mb-2" style="flex-direction: column;">
+                <div class="flex items-center">
+                    <i data-lucide="git-commit" class="h-4 w-4 text-github-text mr-2"></i>
+                    <div class="flex items-center text-white">${ loginId }</div>
+                    <input type="hidden" name="committerId" value="${ loginId }">
+                </div>
+                <div class="github-textarea-container">
+                    <textarea name="commitMessage" class="github-textarea" rows="6" placeholder="What changes did you make and why?" maxlength="500"></textarea>
+                </div>
+            </div>
+            <button type="button" class="github-btn-primary flex-1 md:flex-none w-full" onclick="fnCommit();">
+                Commit
+            </button>
+        </div>
+    </div>
+</div><!-- Add commit -->
+
+<%-- Commits List --%>
+<div  class="space-y-4">
+    <div id="commit-area" class="flex flex-wrap gap-4">
         <c:if test="${ not empty list }">
             <c:forEach var="item" items="${ list }">
-            <tr>
-                <td>
-                    <input type="hidden" name="commitSeq" value="${ item.seq }">
-                    ${ item.commitMessage }
-                </td>
-                <td>${ item.committerId }</td>
-                <td>${ item.commitYmd } ${ item.commitHm }</td>
-            </tr>
+                <div class="github-card w-full md:w-[calc(100%-0.5rem)]">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <div class="flex items-center">
+                                <i data-lucide="git-commit" class="h-4 w-4 text-github-text mr-2"></i>
+                                <input type="hidden" name="commitSeq" value="${ item.seq }">
+                                <div class="flex items-center text-white">${ item.commitMessage }</div>
+                            </div>
+                            <p class="text-github-text text-sm mt-2">
+                                ${ item.committerId }
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center text-xs text-github-text mt-4">
+                        <span>${ item.commitYmd } ${ item.commitHm }</span>
+                    </div>
+                </div>
             </c:forEach>
         </c:if>
-        <c:if test="${ empty list }">
-        <tr>
-            <td colspan="3">아직 커밋이 존재하지 않습니다.</td>
-        </tr>
-        </c:if>
-        </tbody>
-    </table>
-    <table id="add-commit">
-        <tr>
-            <th>
-                ${ loginId }
-                <input type="hidden" name="committerId" value="${ loginId }">
-            </th>
-            <td>
-                <textarea name="commitMessage"></textarea>
-            </td>
-            <td>
-                <button type="button" onclick="fnCommit()">Commit</button>
-            </td>
-        </tr>
-    </table>
+    </div>
 </div>
 
 <script>
@@ -106,14 +146,25 @@
         function _generateList(data) {
             let html = '';
             data.forEach((el, i) => {
-                html += `<tr>`
-                      +     `<td>`
-                      +         `<input type="hidden" name="commitSeq" value="\${el.seq}">`
-                      +         `\${el.commitMessage}`
-                      +     `</td>`
-                      +     `<td>\${el.committerId}</td>`
-                      +     `<td>\${el.commitYmd} \${el.commitHm}</td>`
-                      + `</tr>`
+                html += `
+                <div class="github-card w-full md:w-[calc(100%-0.5rem)]">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <div class="flex items-center">
+                                <i data-lucide="git-commit" class="h-4 w-4 text-github-text mr-2"></i>
+                                <input type="hidden" name="commitSeq" value="\${el.seq}">
+                                <div class="flex items-center text-white">\${el.commitMessage}</div>
+                            </div>
+                            <p class="text-github-text text-sm mt-2">
+                                \${el.committerId}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center text-xs text-github-text mt-4">
+                        <span>\${el.commitYmd} \${el.commitHm}</span>
+                    </div>
+                </div>`;
             });
             return html;
         }
