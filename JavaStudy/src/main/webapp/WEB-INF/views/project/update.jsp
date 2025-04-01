@@ -8,44 +8,68 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/_include/_taglib.jsp" %>
 
-<div>
-    <ul>
-        <li>Update</li>
-    </ul>
+<!-- Title -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+    <div>
+        <h1 class="text-2xl font-semibold text-white">Update Project</h1>
+    </div>
 </div>
+<hr class="border-github-border" />
 
-<div>
+<div class="space-y-4">
     <form id="saveForm" action="/group/${ info.groupName }/project/${ info.projectName }/update" method="post">
         <input type="hidden" name="seq" value="${ info.seq }">
-        <table>
-            <tr>
-                <th>프로젝트 그룹</th>
-                <td>
-                    <select name="groupSeq" onclick="return false;">
-                        <option value="${ info.groupSeq }">${ info.groupName }</option>
-                    </select>
-                </td>
-                <th>프로젝트 이름</th>
-                <td>
-                    <input type="text" name="projectName" value="${ info.projectName }" readonly>
-                </td>
-            </tr>
-            <tr>
-                <th>프로젝트 설명</th>
-                <td colspan="3">
-                    <input type="text" name="description" value="${ info.description }">
-                </td>
-            </tr>
-            <tr>
-                <th>공개 범위</th>
-                <td colspan="3">
-                    <label><input type="radio" name="visibility" value="Private" ${ CommonUtils.checked(info.visibility, "") }> Private</label>
-                    <label><input type="radio" name="visibility" value="Internal" ${ CommonUtils.checked(info.visibility, "") }> Internal</label>
-                    <label><input type="radio" name="visibility" value="Public" ${ CommonUtils.checked(info.visibility, "") }> Public</label>
-                </td>
-            </tr>
-        </table>
-        <button type="button" onclick="fnSave()">Save</button>
+        <div class="flex flex-wrap gap-4">
+            <div class="github-card w-full">
+                <div class="flex justify-between items-start mb-2">
+                    <div class="w-full">
+                        <div class="flex items-center">Group Name</div>
+                        <div class="github-select-container">
+                            <select name="groupSeq" class="github-select">
+                                <option value="${ info.groupSeq }">${ info.groupName }</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start mb-2">
+                    <div class="w-full">
+                        <div class="flex items-center">Project Name</div>
+                        <input type="text"  name="projectName" class="github-input w-64" value="${ info.projectName }" readonly>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start mb-2">
+                    <div class="w-full">
+                        <div class="flex items-center">Project Description</div>
+                        <input type="text" name="description" class="github-input w-64" value="${ info.description }">
+                    </div>
+                </div>
+                <div class="flex justify-between items-start mb-2">
+                    <div class="w-full">
+                        <div class="flex items-center">Visibility</div>
+                        <div class="github-radio-group">
+                            <label class="github-radio-container">
+                                Public repository
+                                <input type="radio" name="visibility" value="Public" ${ CommonUtils.checked(info.visibility, "Public") }>
+                                <span class="github-radio-checkmark"></span>
+                            </label>
+                            <label class="github-radio-container">
+                                Internal repository
+                                <input type="radio" name="visibility" value="Internal" ${ CommonUtils.checked(info.visibility, "Internal") }>
+                                <span class="github-radio-checkmark"></span>
+                            </label>
+                            <label class="github-radio-container">
+                                Private repository
+                                <input type="radio" name="visibility" value="Private" ${ CommonUtils.checked(info.visibility, "Private") }>
+                                <span class="github-radio-checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="github-btn-primary flex-1 md:flex-none w-full" onclick="fnSave();">
+                    Update Project
+                </button>
+            </div>
+        </div>
     </form>
 </div>
 

@@ -8,46 +8,51 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/_include/_taglib.jsp" %>
 
-<div>
-    <ul>
-        <li>Add Member</li>
-    </ul>
+<!-- Title -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+    <div>
+        <h1 class="text-2xl font-semibold text-white">Add Group Members</h1>
+    </div>
 </div>
+<hr class="border-github-border" />
 
-<div>
-    <form id="saveForm" action="/group/${ info.groupName }/add-member" method="post">
-        <table>
-            <thead>
-            <tr>
-                <th></th>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Email</th>
-            </tr>
-            </thead>
-            <tbody id="member-list">
-            <c:if test="${ not empty memberList }">
-                <c:forEach var="item" items="${ memberList }">
-                <tr>
-                    <td>
-                        <input type="checkbox" data-member-seq="${ item.seq }" data-group-seq="${ info.seq }">
-                    </td>
-                    <td>${ item.memberId }</td>
-                    <td>${ item.memberName }</td>
-                    <td>${ item.memberEmail }</td>
-                </tr>
-                </c:forEach>
-            </c:if>
-            <c:if test="${ empty memberList }">
-                <tr>
-                    <td colspan="4">추가할 수 있는 회원이 존재하지 않습니다.</td>
-                </tr>
-            </c:if>
-            </tbody>
-        </table>
-        <button type="button" onclick="fnSave()">Add Member</button>
-    </form>
-</div>
+
+<!-- Members list -->
+<div id="member-list" class="space-y-4">
+    <div class="flex flex-wrap gap-4">
+        <c:if test="${ not empty memberList }">
+            <c:forEach var="item" items="${ memberList }">
+                <div class="github-card w-full md:w-[calc(100%-0.5rem)]">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <div class="flex items-center">
+                                <label class="github-checkbox-container mb-2">
+                                    <input type="checkbox" data-member-seq="${ item.seq }" data-group-seq="${ info.seq }">
+                                    <span class="github-checkbox-checkmark"></span>
+                                    ${ item.memberId }
+                                </label>
+                            </div>
+                            <p class="text-github-text text-sm mt-2">${ item.memberEmail }</p>
+                        </div>
+                        <span class="text-xs bg-secondary py-0.5 px-1.5 rounded-full">${ item.memberName }</span>
+                    </div>
+
+                    <div class="flex items-center text-xs text-github-text mt-4">
+                        <span>Joined at ${ item.createDate }</span>
+                    </div>
+                </div>
+            </c:forEach>
+        </c:if>
+        <c:if test="${ empty memberList }">
+            <div class="github-card w-full md:w-[calc(100%-0.5rem)]">
+                Unable to Add New Members
+            </div>
+        </c:if>
+        <button type="button" class="github-btn-primary flex-1 md:flex-none w-full" onclick="fnSave();">
+            Add Members
+        </button>
+    </div>
+</div><!-- Member list -->
 
 <script>
     function fnSave() {

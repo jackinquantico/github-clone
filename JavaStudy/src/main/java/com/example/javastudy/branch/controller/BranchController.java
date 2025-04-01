@@ -59,7 +59,7 @@ public class BranchController {
         try {
             result = branchService.insertBranch(dto);
             message = "브랜치를 생성했습니다.";
-            callback = "fnRedirectUrl('/group/" + dto.getGroupName() + "/project/" + dto.getProjectName() + "/branch/list')";
+            callback = "fnRedirectUrl('/group/" + dto.getGroupName() + "/project/" + dto.getProjectName() + "')";
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
@@ -91,7 +91,7 @@ public class BranchController {
         try {
             result = branchService.updateBranch(dto);
             message = "브랜치를 변경했습니다.";
-            callback = "fnRedirectUrl('/group/" + urlInfo.getGroupName() + "/project/" + urlInfo.getProjectName() + "/branch/list')";
+            callback = "fnRedirectUrl('/group/" + urlInfo.getGroupName() + "/project/" + urlInfo.getProjectName() + "')";
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
@@ -108,7 +108,7 @@ public class BranchController {
         try {
             result = branchService.deleteBranch(dto);
             message = "브랜치를 삭제했습니다.";
-            callback = "fnRedirectUrl('/group/" + urlInfo.getGroupName() + "/project/" + urlInfo.getProjectName() + "/branch/list')";
+            callback = "fnRedirectUrl('/group/" + urlInfo.getGroupName() + "/project/" + urlInfo.getProjectName() + "')";
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
@@ -132,7 +132,7 @@ public class BranchController {
         try {
             result = commitService.insertMergeCommit(branchDto);
             message = "브랜치를 병합했습니다.";
-            callback = "fnRedirectUrl('/group/" + urlInfo.getGroupName() + "/project/" + urlInfo.getProjectName() + "/branch/list')";
+            callback = "fnRedirectUrl('/group/" + urlInfo.getGroupName() + "/project/" + urlInfo.getProjectName() + "')";
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
@@ -156,7 +156,7 @@ public class BranchController {
         try {
             result = commitService.rebaseBranch(branchDto);
             message = "브랜치를 리베이스했습니다.";
-            callback = "fnRedirectUrl('/group/" + urlInfo.getGroupName() + "/project/" + urlInfo.getProjectName() + "/branch/list')";
+            callback = "fnRedirectUrl('/group/" + urlInfo.getGroupName() + "/project/" + urlInfo.getProjectName() + "')";
         } catch (RuntimeException e) {
             e.printStackTrace();
         }

@@ -29,6 +29,12 @@ public class CommonUtils {
         return getRequest().getSession();
     }
 
+    public static String ternaryOperator(String variable, String value, String rtnStr) {
+        if (variable == null || value == null) {
+            return "";
+        }
+        return value.equals(variable) ? rtnStr : "";
+    }
 
     public static String selected(String val1, String val2) {
         return (StringUtils.isNoneBlank(val1, val2) && val1.equals(val2)) ? "selected" : "";

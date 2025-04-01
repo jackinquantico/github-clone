@@ -8,45 +8,70 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/_include/_taglib.jsp" %>
 
-<div>
-    <ul>
-        <li>Project List</li>
-    </ul>
+<!-- Title -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+    <div>
+        <h1 class="text-2xl font-semibold text-white">Members</h1>
+        <p class="text-github-text">Let's build something great together</p>
+    </div>
 </div>
 
-<div>
-    <table>
-        <thead>
-        <tr>
-            <th></th>
-            <th>ID</th>
-            <th>이름</th>
-            <th>이메일</th>
-        </tr>
-        </thead>
-        <tbody id="memberTable">
+<hr class="border-github-border" />
+
+
+<!-- Repository list -->
+<div id="memberTable" class="space-y-4">
+    <div class="flex justify-between items-center">
+        <h2 class="text-xl font-semibold text-white">All Members</h2>
+        <div class="flex gap-3">
+            <button class="github-btn-primary flex items-center" onclick="location.href='/member/add';">
+                <i data-lucide="user-round-plus" class="h-4 w-4 mr-2"></i>
+                New Member
+            </button>
+            <button class="github-btn-secondary flex items-center" onclick="fnUpdate();">
+                <i data-lucide="user-round-pen" class="h-4 w-4 mr-2"></i>
+                Update
+            </button>
+            <button class="github-btn-secondary flex items-center" onclick="fnDelete();">
+                <i data-lucide="user-round-minus" class="h-4 w-4 mr-2"></i>
+                Delete
+            </button>
+        </div>
+    </div>
+
+    <div class="flex flex-wrap gap-4">
         <c:if test="${ not empty list }">
             <c:forEach var="item" items="${ list }">
-                <tr>
-                    <td>
-                        <input type="checkbox" data-seq="${ item.seq }">
-                    </td>
-                    <td>${ item.memberId }</td>
-                    <td>${ item.memberName }</td>
-                    <td>${ item.memberEmail }</td>
-                </tr>
+                <div class="github-card w-full md:w-[calc(50%-0.5rem)]">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <div class="flex items-center">
+                                <label class="github-checkbox-container mb-2">
+                                    <input type="checkbox" data-seq="${ item.seq }">
+                                    <span class="github-checkbox-checkmark"></span>
+                                </label>
+                                <div class="flex items-center text-white">
+                                    ${ item.memberId } <span class="text-github-text">(${ item.memberEmail })</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-secondary py-0.5 px-1.5 rounded-full">${ item.memberName }</span>
+                    </div>
+                </div>
             </c:forEach>
         </c:if>
         <c:if test="${ empty list }">
-            <tr>
-                <td colspan="4">아직 가입한 회원이 없습니다.</td>
-            </tr>
+            <div class="github-card w-full md:w-[calc(50%-0.5rem)]">
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <div class="flex items-center">
+                            No Member yet
+                        </div>
+                    </div>
+                </div>
+            </div>
         </c:if>
-        </tbody>
-    </table>
-    <button type="button" onclick="location.href='/member/add';">회원 추가</button>
-    <button type="button" onclick="fnUpdate();">회원 수정</button>
-    <button type="button" onclick="fnDelete();">회원 삭제</button>
+    </div>
 </div>
 
 <script>

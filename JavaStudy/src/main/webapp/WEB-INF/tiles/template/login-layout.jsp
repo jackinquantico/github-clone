@@ -10,9 +10,7 @@
 <div class="min-h-screen flex flex-col">
     <div class="flex-1 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row py-8 gap-8">
-            <tiles:insertAttribute name="sidebar" />
-
-            <div class="flex-1 order-1 lg:order-2 space-y-8" style="min-width: 450px;">
+            <div class="flex-1 order-1 lg:order-2 space-y-8" style="min-width: 350px;">
                 <tiles:insertAttribute name="contents" />
             </div>
         </div>

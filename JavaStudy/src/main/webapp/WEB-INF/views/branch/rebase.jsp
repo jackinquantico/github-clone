@@ -8,40 +8,52 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/_include/_taglib.jsp" %>
 
-<div>
-    <ul>
-        <li>Rebase</li>
-    </ul>
+<!-- Title -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+    <div>
+        <h1 class="text-2xl font-semibold text-white">Rebase Branch</h1>
+    </div>
 </div>
+<hr class="border-github-border" />
 
-<div>
+<div class="space-y-4">
     <form id="saveForm" action="/group/${ info.groupName }/project/${ info.projectName }/branch/rebase" method="post">
-        <table>
-            <tr>
-                <th>그룹 / 프로젝트</th>
-                <td colspan="3">
-                    ${ info.groupName } / ${ info.projectName }
-                </td>
-            </tr>
-            <tr>
-                <th>현재 브랜치</th>
-                <td>
-                    <input type="hidden" name="seq" value="${ info.seq }">
-                    <input type="hidden" name="lastCommitSeq" value="${ info.lastCommitSeq }">
-                    ${ info.branchName }
-                </td>
-                <th>타겟 브랜치</th>
-                <td>
-                    <select name="fromBranchSeq">
-                        <option value="">:: 선택 ::</option>
-                        <c:forEach var="item" items="${ list }">
-                            <option value="${ item.seq }" data-last-commit-seq="${ item.lastCommitSeq }">${ item.branchName }</option>
-                        </c:forEach>
-                    </select>
-                </td>
-            </tr>
-        </table>
-        <button type="button" onclick="fnRebase();">Rebase</button>
+        <div class="flex flex-wrap gap-4">
+            <div class="github-card w-full">
+                <div class="flex justify-between items-start mb-2">
+                    <div class="w-full">
+                        <div class="flex items-center">Group / Project</div>
+                        <div class="flex items-center text-white">
+                            ${ info.groupName } / ${ info.projectName }
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start mb-2">
+                    <div class="w-full">
+                        <div class="flex items-center">Current Branch</div>
+                        <input type="hidden" name="seq" value="${ info.seq }">
+                        <input type="hidden" name="lastCommitSeq" value="${ info.lastCommitSeq }">
+                        ${ info.branchName }
+                    </div>
+                </div>
+                <div class="flex justify-between items-start mb-2">
+                    <div class="w-full">
+                        <div class="flex items-center">Current Branch</div>
+                        <div class="github-select-container">
+                            <select name="fromBranchSeq" class="github-select">
+                                <option value="">:: 선택 ::</option>
+                                <c:forEach var="item" items="${ list }">
+                                    <option value="${ item.seq }" data-last-commit-seq="${ item.lastCommitSeq }">${ item.branchName }</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="github-btn-primary flex-1 md:flex-none w-full" onclick="fnRebase();">
+                    Rebase Branch
+                </button>
+            </div>
+        </div>
     </form>
 </div>
 
