@@ -11,27 +11,19 @@
 <!-- Title -->
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
     <div>
-        <h1 class="text-2xl font-semibold text-white">View Branch</h1>
+        <h1 class="text-2xl font-semibold text-white">Branch</h1>
     </div>
     <div class="flex gap-3" style="flex-direction: column; align-items: flex-end;">
         <div>
-        <button class="github-btn-primary flex-1 md:flex-none" onclick="location.href='/group/${ info.groupName }/project/${ info.projectName }/branch/${ info.branchName }/update';">
-            Update Branch
-        </button>
-        <button class="github-btn-secondary flex-1 md:flex-none" onclick="fnDelete()">
-            Delete Branch
-        </button>
-        </div>
-        <div>
-        <button class="github-btn-primary flex-1 md:flex-none" onclick="fnAddBranch('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">
-            New Branch From
-        </button>
-        <button class="github-btn-primary flex-1 md:flex-none" onclick="fnMerge('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">
-            Merge Branch
-        </button>
-        <button class="github-btn-primary flex-1 md:flex-none" onclick="fnRebase('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">
-            Rebase Branch
-        </button>
+            <button type="button" class="github-btn-secondary flex-1 md:flex-none" onclick="location.href='/group/${ info.groupName }/project/${ info.projectName }';">
+                Back
+            </button>
+            <button type="button" class="github-btn-primary flex-1 md:flex-none" onclick="location.href='/group/${ info.groupName }/project/${ info.projectName }/branch/${ info.branchName }/update';">
+                Update Branch
+            </button>
+            <button type="button" class="github-btn-secondary flex-1 md:flex-none" onclick="fnDelete()">
+                Delete Branch
+            </button>
         </div>
     </div>
 </div>
@@ -70,6 +62,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="flex justify-between gap-3">
+                    <button type="button" class="github-btn-primary w-full" onclick="fnAddBranch('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">
+                        New Branch From
+                    </button>
+                    <button type="button" class="github-btn-secondary" onclick="fnMerge('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">
+                        Merge
+                    </button>
+                    <button type="button" class="github-btn-secondary" onclick="fnRebase('${ info.groupName }', '${ info.projectName }', '${ info.seq }')">
+                        Rebase
+                    </button>
+                </div>
             </div>
         </div>
     </form>
@@ -82,7 +85,7 @@
             <div class="flex justify-between items-start mb-2" style="flex-direction: column;">
                 <div class="flex items-center">
                     <i data-lucide="git-commit" class="h-4 w-4 text-github-text mr-2"></i>
-                    <div class="flex items-center text-white">${ loginId }</div>
+                    <div class="flex items-center text-white">${ loginId } (${ loginEmail })</div>
                     <input type="hidden" name="committerId" value="${ loginId }">
                 </div>
                 <div class="github-textarea-container">
@@ -106,8 +109,8 @@
                         <div>
                             <div class="flex items-center">
                                 <i data-lucide="git-commit" class="h-4 w-4 text-github-text mr-2"></i>
-                                <input type="hidden" name="commitSeq" value="${ item.seq }">
                                 <div class="flex items-center text-white">${ item.commitMessage }</div>
+                                <input type="hidden" name="commitSeq" value="${ item.seq }">
                             </div>
                             <p class="text-github-text text-sm mt-2">
                                 ${ item.committerId }

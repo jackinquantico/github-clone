@@ -29,7 +29,7 @@
 
 <div class="space-y-4">
     <form id="saveForm" action="/group/${ info.groupName }/delete" method="post">
-        <div class="flex flex-wrap gap- md:w-[calc(100%-0.5rem)]4">
+        <div class="flex flex-wrap gap-4 md:w-[calc(100%-0.5rem)]">
             <div class="github-card w-full">
                 <div class="flex justify-between items-start mb-2">
                     <div>
@@ -99,7 +99,7 @@
     <div class="flex flex-wrap gap-4">
         <c:if test="${ not empty info.memberList }">
             <c:forEach var="item" items="${ info.memberList }">
-                <div class="github-card w-full md:w-[calc(50%-0.5rem)]">
+                <div class="github-card w-full md:w-[calc(${ info.memberList.size() gt 1 ? 50 : 100}%-0.5rem)]">
                     <div class="flex justify-between items-start mb-2">
                         <div>
                             <div class="flex items-center">
@@ -153,7 +153,7 @@
     <div class="flex flex-wrap gap-4">
         <c:if test="${ not empty info.projectList }">
             <c:forEach var="item" items="${ info.projectList }">
-                <div class="github-card w-full md:w-[calc(50%-0.5rem)]">
+                <div class="github-card w-full md:w-[calc(${ info.projectList.size() gt 1 ? 50 : 100}%-0.5rem)]">
                     <div class="flex justify-between items-start mb-2">
                         <div>
                             <div class="flex items-center">
@@ -172,6 +172,10 @@
                         <span class="mr-3">${ item.projectOwner }</span>
                         <a href="#" class="flex items-center mr-3 hover:text-github-accent">
                             <i data-lucide="git-branch" class="h-3 w-3 mr-1"></i>
+                            <span>${ item.branchCount }</span>
+                        </a>
+                        <a href="#" class="flex items-center mr-3 hover:text-github-accent">
+                            <i data-lucide="git-commit" class="h-3 w-3 mr-1"></i>
                             <span>${ item.commitCount }</span>
                         </a>
                         <span>${ item.lastCommitYmd } ${ item.lastCommitHm }</span>
@@ -180,16 +184,12 @@
             </c:forEach>
         </c:if>
         <c:if test="${ empty info.projectList }">
-            <div class="github-card w-full md:w-[calc(50%-0.5rem)]">
+            <div class="github-card w-full md:w-[calc(100%-0.5rem)]">
                 <div class="flex justify-between items-start mb-2">
                     <div>
                         <div class="flex items-center">
-                            <i data-lucide="book" class="h-4 w-4 text-github-text mr-2"></i>
-                            <a href="#" class="text-github-accent text-lg font-semibold hover:underline">
-                                No project yet
-                            </a>
+                            No project yet
                         </div>
-                        <p class="text-github-text text-sm mt-2"></p>
                     </div>
                 </div>
             </div>

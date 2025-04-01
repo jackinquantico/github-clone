@@ -18,8 +18,8 @@
         <button class="github-btn-primary flex-1 md:flex-none" onclick="location.href='/group/add';">
             Start a new Group
         </button>
-        <button class="github-btn-secondary flex-1 md:flex-none">
-            Explore repositories
+        <button class="github-btn-secondary flex-1 md:flex-none" onclick="location.href='/group/list';">
+            Explore Groups
         </button>
     </div>
 </div>
@@ -30,16 +30,11 @@
 <div class="space-y-4">
     <div class="flex justify-between items-center">
         <h2 class="text-xl font-semibold text-white">Popular Repositories</h2>
-        <button class="github-btn-primary flex items-center">
-            <i data-lucide="book" class="h-4 w-4 mr-2"></i>
-            New
-        </button>
     </div>
-
     <div class="flex flex-wrap gap-4">
         <c:if test="${ not empty list }">
             <c:forEach var="item" items="${ list }">
-                <div class="github-card w-full md:w-[calc(50%-0.5rem)]">
+                <div class="github-card w-full md:w-[calc(${ list.size() gt 1 ? 50 : 100 }%-0.5rem)]">
                     <div class="flex justify-between items-start mb-2">
                         <div>
                             <div class="flex items-center">
@@ -58,6 +53,10 @@
                         <span class="mr-3">${ item.projectOwner }</span>
                         <a href="#" class="flex items-center mr-3 hover:text-github-accent">
                             <i data-lucide="git-branch" class="h-3 w-3 mr-1"></i>
+                            <span>${ item.branchCount }</span>
+                        </a>
+                        <a href="#" class="flex items-center mr-3 hover:text-github-accent">
+                            <i data-lucide="git-commit" class="h-3 w-3 mr-1"></i>
                             <span>${ item.commitCount }</span>
                         </a>
                         <span>${ item.lastCommitYmd } ${ item.lastCommitHm }</span>
@@ -82,14 +81,3 @@
         </c:if>
     </div>
 </div><!-- Repository list -->
-
-<script>
-    $(() => {
-        $('.list-area td').on('click', (event) => {
-            const target = $(event.currentTarget).parents('tr');
-            const groupName = target.data('groupName');
-            const projectName = target.data('projectName');
-            location.href = ``;
-        })
-    });
-</script>

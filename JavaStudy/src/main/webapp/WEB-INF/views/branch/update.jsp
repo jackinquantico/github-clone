@@ -19,10 +19,10 @@
 <div class="space-y-4">
     <form id="saveForm" action="/group/${ info.groupName }/project/${ info.projectName }/branch/${ info.branchName }/update" method="post">
         <input type="hidden" name="seq" value="${ info.seq }">
-        <div class="flex flex-wrap gap-4 w-80">
+        <div class="flex flex-wrap gap-4">
             <div class="github-card w-full">
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Group / Project</div>
                         <div class="flex items-center text-white">
                             ${ info.groupName } / ${ info.projectName }
@@ -30,13 +30,13 @@
                     </div>
                 </div>
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Branch Name</div>
                         <input type="text"  name="branchName" class="github-input w-64" value="${ info.branchName }" placeholder="브랜치 이름">
                     </div>
                 </div>
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Default Branch</div>
                         <div class="github-form-group">
                             <label class="github-checkbox-container mb-2">

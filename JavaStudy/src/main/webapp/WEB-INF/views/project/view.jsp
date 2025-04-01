@@ -84,7 +84,24 @@
         </div>
     </form>
 </div>
-<div id="gitGraph" style="transform: scale(0.7); transform-origin: top left;"></div>
+
+<div class="space-y-4">
+    <div class="flex justify-between items-center">
+        <h2 class="text-xl font-semibold text-white">Git Graph</h2>
+    </div>
+    <div class="flex flex-wrap gap-4">
+        <div class="github-card w-full md:w-[calc(100%-0.5rem)]" style="height: 400px; overflow: auto;">
+            <div id="gitGraph" style="transform: scale(0.7); transform-origin: top left;"></div>
+        </div>
+    </div>
+
+    <%-- Mermaid.js Git Graph --%>
+<%--    <div class="flex flex-wrap gap-4">--%>
+<%--        <div class="github-card w-full md:w-[calc(100%-0.5rem)]">--%>
+<%--            <pre class="mermaid"></pre>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+</div>
 
 <%-- Branch List --%>
 <div id="member-list" class="space-y-4">
@@ -101,7 +118,7 @@
     <div class="flex flex-wrap gap-4">
         <c:if test="${ not empty list }">
             <c:forEach var="item" items="${ list }">
-                <div class="github-card w-full md:w-[calc(${ list.size() lt 1 ? 50 : 100 }%-0.5rem)]">
+                <div class="github-card w-full md:w-[calc(${ list.size() gt 1 ? 50 : 100 }%-0.5rem)]">
                     <div class="flex justify-between items-start mb-2">
                         <div>
                             <div class="flex items-center">
@@ -147,9 +164,6 @@
             </div>
         </c:if>
     </div>
-
-    <%-- Graph --%>
-    <pre class="mermaid"></pre>
 </div>
 
 <script>

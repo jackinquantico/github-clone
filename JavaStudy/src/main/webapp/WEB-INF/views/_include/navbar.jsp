@@ -14,19 +14,21 @@
             <!-- Left section -->
             <div class="flex items-center">
                 <a href="/">
-                    <i data-lucide="github" class="h-8 w-8 text-white"></i>
+                    <i data-lucide="git-pull-request" class="h-8 w-8 text-white"></i>
                 </a>
 
                 <!-- Desktop Navigation -->
                 <div class="hidden md:ml-6 md:flex md:space-x-4">
                     <div class="github-input-container">
                         <input class="github-input w-64" placeholder="Search or jump to..." type="text">
-                        <i data-lucide="search" class="h-4 w-4"></i>
+                        <i data-lucide="search" class="h-4 w-4 ml-0"></i>
                     </div>
                     <a href="/group/list" class="text-github-text hover:text-white px-3 py-2 text-sm font-medium">
+                        <i data-lucide="book" class="h-4 w-4"></i>
                         Group
                     </a>
                     <a href="/member/list" class="text-github-text hover:text-white px-3 py-2 text-sm font-medium">
+                        <i data-lucide="user-search" class="h-4 w-4"></i>
                         Member
                     </a>
 <%--                    <a href="#" class="text-github-text hover:text-white px-3 py-2 text-sm font-medium">--%>
@@ -40,13 +42,11 @@
 
             <!-- Right section -->
             <div class="flex items-center">
-                <div class="hidden md:flex md:items-center md:space-x-3">
+                <div class="hidden md:flex md:items-center md:space-x-3 gap-3">
                     <i data-lucide="bell" class="h-5 w-5 text-github-text hover:text-white cursor-pointer"></i>
 
                     <div class="dropdown">
-                        <button class="text-github-text hover:text-white">
-                            <i data-lucide="plus" class="h-5 w-5"></i>
-                        </button>
+                        <i data-lucide="plus" class="h-5 w-5 text-github-text hover:text-white cursor-pointer"></i>
                         <div class="dropdown-content bg-github-dark border-github-border">
                             <c:if test="${ !isAuthenticated }">
                                 <a href="/auth/login">Login</a>
@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="h-6 w-6 rounded-full overflow-hidden">
-                        <img src="https://avatars.githubusercontent.com/u/583231?v=4" alt="User avatar">
+                        <i data-lucide="user" class="h-5 w-5 text-github-text text-white cursor-pointer"></i>
                     </div>
                 </div>
 

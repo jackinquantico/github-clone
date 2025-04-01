@@ -19,22 +19,22 @@
 
 <div class="space-y-4">
     <form id="saveForm" action="/group/${ info.groupName }/update" method="post">
-        <div class="flex flex-wrap gap-4" style="width: 40rem;">
+        <div class="flex flex-wrap gap-4">
             <div class="github-card w-full">
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Group Name</div>
                         <input type="text" name="groupName" class="github-input w-64" value="${ info.groupName }">
                     </div>
                 </div>
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Group Description</div>
                         <input type="text" name="groupDescription" class="github-input w-64" value="${ info.groupDescription }">
                     </div>
                 </div>
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Visibility</div>
                         <div class="github-radio-group">
                             <label class="github-radio-container">

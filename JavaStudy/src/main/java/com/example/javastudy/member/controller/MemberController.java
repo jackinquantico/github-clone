@@ -33,7 +33,7 @@ public class MemberController {
 
     @GetMapping("/add")
     public String addForm() {
-        return "auth/add";
+        return "member/add";
     }
 
     @PostMapping("/add")

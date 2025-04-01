@@ -11,16 +11,8 @@
 <!-- Title -->
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
     <div>
-        <h1 class="text-2xl font-semibold text-white">Group</h1>
+        <h1 class="text-2xl font-semibold text-white">Groups</h1>
         <p class="text-github-text">Let's build something great together</p>
-    </div>
-    <div class="flex gap-3">
-        <button class="github-btn-primary flex-1 md:flex-none" onclick="location.href='/group/add';">
-            Start a new Group
-        </button>
-        <button class="github-btn-secondary flex-1 md:flex-none">
-            Explore Groups
-        </button>
     </div>
 </div>
 
@@ -69,12 +61,8 @@
                 <div class="flex justify-between items-start mb-2">
                     <div>
                         <div class="flex items-center">
-                            <i data-lucide="book" class="h-4 w-4 text-github-text mr-2"></i>
-                            <a href="#" class="text-github-accent text-lg font-semibold hover:underline">
-                                No project yet
-                            </a>
+                            No Group yet
                         </div>
-                        <p class="text-github-text text-sm mt-2"></p>
                     </div>
                 </div>
             </div>

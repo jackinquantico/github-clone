@@ -21,4 +21,5 @@
 <c:if test="${isAuthenticated and !empty principal and principal.memberDto != null}">
     <c:set var="loginId" value="${CommonUtils.defaultString(principal.memberDto.memberId)}"/>
     <c:set var="loginName" value="${CommonUtils.defaultString(principal.memberDto.memberName)}"/>
+    <c:set var="loginEmail" value="${CommonUtils.defaultString(principal.memberDto.memberEmail)}"/>
 </c:if>

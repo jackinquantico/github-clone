@@ -19,32 +19,32 @@
 <div class="space-y-4">
     <form id="saveForm" action="/group/${ info.groupName }/project/${ info.projectName }/update" method="post">
         <input type="hidden" name="seq" value="${ info.seq }">
-        <div class="flex flex-wrap gap-4 w-80">
+        <div class="flex flex-wrap gap-4">
             <div class="github-card w-full">
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Group Name</div>
                         <div class="github-select-container">
-                            <select name="groupSeq" class="github-select" onclick="return false;">
+                            <select name="groupSeq" class="github-select">
                                 <option value="${ info.groupSeq }">${ info.groupName }</option>
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Project Name</div>
                         <input type="text"  name="projectName" class="github-input w-64" value="${ info.projectName }" readonly>
                     </div>
                 </div>
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Project Description</div>
                         <input type="text" name="description" class="github-input w-64" value="${ info.description }">
                     </div>
                 </div>
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Visibility</div>
                         <div class="github-radio-group">
                             <label class="github-radio-container">
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <button type="button" class="github-btn-primary flex-1 md:flex-none w-full" onclick="fnSave();">
-                    Create Group
+                    Update Project
                 </button>
             </div>
         </div>

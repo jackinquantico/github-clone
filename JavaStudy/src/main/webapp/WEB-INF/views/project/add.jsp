@@ -18,10 +18,10 @@
 
 <div class="space-y-4">
     <form id="saveForm" action="/group/${ groupName }/project/add" method="post">
-        <div class="flex flex-wrap gap-4 md:w-[calc(100%-0.5rem)]">
+        <div class="flex flex-wrap gap-4">
             <div class="github-card w-full">
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Group Name</div>
                         <div class="github-select-container">
                             <select name="groupSeq" class="github-select">
@@ -34,19 +34,19 @@
                     </div>
                 </div>
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Project Name</div>
                         <input type="text"  name="projectName" class="github-input w-64">
                     </div>
                 </div>
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Project Description</div>
                         <input type="text"  name="description" class="github-input w-64">
                     </div>
                 </div>
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Visibility</div>
                         <div class="github-radio-group">
                             <label class="github-radio-container">
@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <button type="button" class="github-btn-primary flex-1 md:flex-none w-full" onclick="fnSave();">
-                    Create Group
+                    Create Project
                 </button>
             </div>
         </div>

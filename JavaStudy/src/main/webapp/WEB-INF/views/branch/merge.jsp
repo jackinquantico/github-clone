@@ -18,10 +18,10 @@
 
 <div class="space-y-4">
     <form id="saveForm" action="/group/${ info.groupName }/project/${ info.projectName }/branch/merge" method="post">
-        <div class="flex flex-wrap gap-4 w-80">
+        <div class="flex flex-wrap gap-4">
             <div class="github-card w-full">
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Group / Project</div>
                         <div class="flex items-center text-white">
                             ${ info.groupName } / ${ info.projectName }
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Current Branch</div>
                         <input type="hidden" name="fromBranchSeq" value="${ info.seq }">
                         <input type="hidden" name="fromBranchName" value="${ info.branchName }">
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="flex justify-between items-start mb-2">
-                    <div>
+                    <div class="w-full">
                         <div class="flex items-center">Current Branch</div>
                         <div class="github-select-container">
                             <select name="seq" class="github-select">

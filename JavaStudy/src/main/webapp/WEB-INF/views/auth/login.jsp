@@ -25,14 +25,14 @@
     <div class="flex flex-wrap gap-4">
         <div class="github-card w-full">
             <div class="flex justify-between items-start mb-2">
-                <div>
+                <div class="w-full">
                     <div class="flex items-center">Username or ID</div>
                     <input type="text" name="memberId" value="${ loginId }" class="github-input w-64">
                 </div>
             </div>
 
-            <div class="flex justify-between items-start mb-2">
-                <div>
+            <div class="flex justify-between items-start mb-4">
+                <div class="w-full">
                     <div class="flex items-center">Password</div>
                     <input type="password" name="memberPassword" value="${ loginPwd }" class="github-input w-64">
                 </div>
