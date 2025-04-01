@@ -42,6 +42,7 @@ const ALLOWED_CALLBACKS = {
     fnRedirectUrl: fnRedirectUrl,
     fnReloadPage: fnReloadPage,
     fnGetList: window.fnGetList,
+    fnDrawGraph: window.fnDrawGraph,
 };
 
 function executeFn(callbackStr, data) {

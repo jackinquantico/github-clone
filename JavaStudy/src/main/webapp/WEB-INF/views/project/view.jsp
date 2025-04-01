@@ -20,9 +20,15 @@
         <table>
             <tr>
                 <th>프로젝트 그룹</th>
-                <td>${ info.groupName }</td>
+                <td>
+                    <input type="hidden" name="groupName" value="${ info.groupName }">
+                    ${ info.groupName }
+                </td>
                 <th>프로젝트 이름</th>
-                <td>${ info.projectName }</td>
+                <td>
+                    <input type="hidden" name="projectName" value="${ info.projectName }">
+                    ${ info.projectName }
+                </td>
             </tr>
             <tr>
                 <th>프로젝트 설명</th>
@@ -70,6 +76,14 @@
     <button type="button" onclick="location.href='/group/${info.groupName}/project/${info.projectName}/branch/add';">Create Branch</button>
 </div>
 
+<pre class="mermaid">
+gitGraph TB:
+   commit id: "init"
+   branch feature
+   checkout feature
+   commit id: "feat1"
+</pre>
+
 <script>
     $(() => {
         $('.list-area td').on('click', (event) => {
@@ -79,11 +93,30 @@
             const branchName = target.data('branchName');
             location.href = `/group/\${groupName}/project/\${projectName}/branch/\${branchName}`;
         })
+
+        fnGenerateGraph();
     });
 
     function fnDelete() {
         const url = fnGetFormData('deleteForm').getUrl();
         const data = fnGetFormData('deleteForm').getData();
         fnPost(url, JSON.stringify(data));
+    }
+
+    function fnGenerateGraph() {
+        const groupName = $('[name=groupName]').val();
+        const projectName = $('[name=projectName]').val();
+        const url = `/group/\${groupName}/project/\${projectName}/commit-graph`;
+        const data = {
+            groupName: groupName,
+            projectName: projectName,
+        }
+        fnPost(url, JSON.stringify(data));
+    }
+
+    function fnDrawGraph(data) {
+        $('.mermaid').text(data)
+        console.log(data)
+        mermaid.init(undefined, ".mermaid");
     }
 </script>
