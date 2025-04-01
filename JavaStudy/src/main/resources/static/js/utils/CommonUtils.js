@@ -6,7 +6,7 @@ function fnAjaxRequest(url, method, data) {
         contentType: "application/json",
         success: (resp) => {
             if (resp.callback) {
-                executeFn(resp.callback);
+                executeFn(resp.callback, resp.data);
             }
         },
         error: (err) => {
@@ -41,38 +41,22 @@ function fnReloadPage() {
 const ALLOWED_CALLBACKS = {
     fnRedirectUrl: fnRedirectUrl,
     fnReloadPage: fnReloadPage,
+    fnGetList: window.fnGetList,
 };
 
-function executeFn(callbackStr) {
-    const match = callbackStr.match(/^([a-zA-Z_$][\w$]*)\((.*)\);?$/);
+function executeFn(callbackStr, data) {
+    if (typeof callbackStr !== "string" || callbackStr.trim() === "") return;
 
-    if (!match) {
-        alert("올바르지 않은 콜백 형식입니다.");
-        return;
-    }
-
-    const fnName = match[1];
-    const rawArgs = match[2];
-
-    if (!(fnName in ALLOWED_CALLBACKS)) {
-        alert(`허용되지 않은 콜백 함수: ${fnName}`);
-        return;
-    }
+    // 1. __DATA__ 치환 (객체 통째로 넘길 수 있게)
+    let finalCode = callbackStr.includes("__DATA__")
+        ? callbackStr.replace("__DATA__", JSON.stringify(data))
+        : callbackStr;
 
     try {
-        // 문자열 파라미터가 있어도 JSON처럼 파싱되게 처리
-        const args = rawArgs.trim()
-            ? Function(`"use strict"; return [${rawArgs}]`)()  // safer eval 대체
-            : [];
-
-        const fn = ALLOWED_CALLBACKS[fnName];
-
-        if (typeof fn === "function") {
-            fn(...args);
-        } else {
-            alert(`"${fnName}"은 유효한 함수가 아닙니다.`);
-        }
+        // 2. 코드 실행 (함수 호출 or location.href 등 처리 가능)
+        const fn = new Function(finalCode);
+        fn();
     } catch (e) {
-        alert(`콜백 실행 오류: ${e.message}`);
+        console.error("콜백 실행 오류:", e);
     }
 }

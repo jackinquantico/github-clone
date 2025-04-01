@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.javastudy.commit.service.CommitMapper">
+
+    <select id="selectCommitList" resultType="com.example.javastudy.commit.model.CommitDto">
+        /* CommitMapper.selectCommitList */
+        SELECT TC.*
+        FROM TB_COMMIT TC
+        WHERE TC.BRANCH_SEQ = #{branchSeq}
+        ORDER BY TC.SEQ DESC
+    </select>
+
+    <select id="selectCommit" resultType="com.example.javastudy.commit.model.CommitDto">
+        /* CommitMapper.selectCommit */
+        SELECT TC.*
+        FROM TB_COMMIT TC
+        WHERE TC.SEQ = #{seq}
+    </select>
+
+    <insert id="insertCommit">
+        /* CommitMapper.insertCommit */
+        INSERT INTO TB_COMMIT ( SEQ
+                              , BRANCH_SEQ
+                              , PARENT_COMMIT_SEQ
+                              , COMMIT_MESSAGE
+                              , COMMITTER_ID
+                              , COMMIT_YMD
+                              , COMMIT_HM
+                              , MERGE_FROM_COMMIT_SEQ)
+        VALUES ( #{seq}
+               , #{branchSeq}
+               , #{parentCommitSeq}
+               , #{commitMessage}
+               , #{committerId}
+               , #{commitYmd}
+               , #{commitHm}
+               , #{mergeFromCommitSeq})
+    </insert>
+</mapper>

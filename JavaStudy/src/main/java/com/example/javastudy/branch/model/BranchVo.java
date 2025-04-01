@@ -34,6 +34,8 @@ public class BranchVo {
     private String branchName;
     /** 기본_브랜치_여부 */
     private String isDefault;
+    /** 최근_커밋_SEQ */
+    private String lastCommitSeq;
     /** 최근_커밋_메시지 */
     private String lastCommitMessage;
     /** 최근_커밋_일자 */

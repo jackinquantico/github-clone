@@ -2,13 +2,18 @@ package com.example.javastudy.branch.controller;
 
 import com.example.core.cmn.model.AjaxResBody;
 import com.example.javastudy.branch.model.BranchDto;
+import com.example.javastudy.branch.model.BranchVo;
 import com.example.javastudy.branch.service.BranchService;
+import com.example.javastudy.commit.model.CommitDto;
+import com.example.javastudy.commit.service.CommitService;
 import com.example.javastudy.project.model.ProjectDto;
 import com.example.javastudy.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * packageName    : com.example.javastudy.branch.controller
@@ -28,6 +33,7 @@ public class BranchController {
 
     private final ProjectService projectService;
     private final BranchService branchService;
+    private final CommitService commitService;
 
     @GetMapping({"", "/", "/list"})
     public String list(@ModelAttribute("info") BranchDto branchDto, Model model) {
@@ -60,7 +66,10 @@ public class BranchController {
 
     @GetMapping("/{branchName}")
     public String view(@ModelAttribute BranchDto branchDto, Model model) {
-        model.addAttribute("info", branchService.selectBranch(branchDto));
+        BranchDto info = branchService.selectBranch(branchDto);
+        List<CommitDto> list = commitService.selectCommitList(CommitDto.builder().branchSeq(info.getSeq()).build());
+        model.addAttribute("info", info);
+        model.addAttribute("list", list);
         return "branch/view";
     }
 
