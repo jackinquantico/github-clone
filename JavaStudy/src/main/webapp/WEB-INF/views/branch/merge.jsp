@@ -28,6 +28,7 @@
                 <td>
                     <input type="hidden" name="fromBranchSeq" value="${ info.seq }">
                     <input type="hidden" name="fromBranchName" value="${ info.branchName }">
+                    <input type="hidden" name="lastCommitSeq" value="${ info.lastCommitSeq }">
                     ${ info.branchName }
                 </td>
                 <th>타겟 브랜치</th>
@@ -53,7 +54,7 @@
             alert('타겟 브랜치는 현재 브랜치가 될 수 없습니다.');
             return false;
         }
-        data.lastCommitSeq = $('select[name=seq] option:selected').data('lastCommitSeq');
+        data.fromBranchLastCommitSeq = $('select[name=seq] option:selected').data('lastCommitSeq');
         data.branchName = $('select[name=seq] option:selected').data('branchName');
         fnPost(url, JSON.stringify(data));
     }

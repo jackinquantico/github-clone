@@ -76,10 +76,10 @@ public class CommitService {
 
     public boolean insertMergeCommit(BranchDto branchDto) {
         CommitDto commitDto = CommitDto.builder()
-                .branchSeq(branchDto.getSeq())
+                .branchSeq(branchDto.getFromBranchSeq())
                 .parentCommitSeq(branchDto.getLastCommitSeq())
                 .commitMessage("Merge branch '" + branchDto.getFromBranchName() + "' into " + branchDto.getBranchName())
-                .mergeFromCommitSeq(branchDto.getFromBranchSeq())
+                .mergeFromCommitSeq(branchDto.getFromBranchLastCommitSeq())
                 .build();
         insertCommit(commitDto);
 
